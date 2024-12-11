@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Upload</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Font+Awesome+5+Free:wght@900&display=swap" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/upload.css') }}" />
+    <script src="{{ url_for('static', filename='js/upload.js') }}" defer></script>
+
+  </head>
+  <body>
+    <div class="main-container">
+      <div class="frame"><div class="logo-light"></div></div>
+      <div class="rectangle">
+        <span class="how-to-protect"> How to Protect</span>
+        <div class="symbol"></div>
+      </div>
+      <a href="{{ url_for('about_us') }}"><span class="about-us">About Us</span></a>
+      <a href="{{ url_for('prevention') }}"><span class="prevention">Prevention</span></a>
+      <a href="{{ url_for('upload') }}"><span class="upload">Upload</span></a>
+      <a href="{{ url_for('home') }}"><span class="home">Home</span></a>
+    </div>
+    <body1>
+        <h1> </h1>
+      
+        <!-- Image Upload Form -->
+        <form action="/upload" method="POST" enctype="multipart/form-data" class="center">
+          <label for="file">Upload Chest X-ray Image:</label>
+          <input type="file" name="file" id="file" required>
+          <button type="submit">Upload</button>
+        </form>
+      
+        <!-- Display Uploaded Image -->
+        {% if image_file %}
+          <div class="result-container">
+            <h3>Uploaded Image</h3>
+            <img src="{{ url_for('static', filename='uploads/' + image_file) }}" alt="Uploaded Image" class="large">
+      
+            <!-- Predict Button -->
+            <form action="/predict" method="POST" class="center">
+              <input type="hidden" name="image_file" value="{{ image_file }}">
+              <button type="submit">Predict</button>
+            </form>
+          </div>
+        {% endif %}
+      
+       <!-- Display Prediction Result -->
+{% if result %}
+<div class="result-container">
+    <h3>Prediction Result</h3>
+    <table class="result-table">
+        <tr>
+            <th>TB Detected</th>
+            <td class="{{ 'yes' if result == 'YES' else 'NO' }}">
+                <strong>{{ result }}</strong>
+            </td>
+        </tr>
+        <tr>
+            <th>Confidence Score</th>
+            <td><strong>{{ accuracy }}%</strong></td>
+        </tr>
+    </table>
+
+    <!-- Show Generate Heatmap Button -->
+    {% if result == "YES" %}
+        <form action="/generate_heatmap" method="POST" class="center">
+            <input type="hidden" name="image_file" value="{{ image_file }}">
+            <button type="submit" class="btn btn-primary">Detect Area</button>
+        </form>
+    {% endif %}
+</div>
+{% endif %}
+
+<!-- Display Heatmap -->
+{% if heatmap_url %}
+<div class="result-container">
+    <h3>Detected Area</h3>
+    <img src="{{ heatmap_url }}" alt="Heatmap" class="large">
+</div>
+{% endif %}
+
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+    <div class="alert alert-danger">
+        <ul>
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endif %}
+{% endwith %}
+
+      </body1>
+      
+      
+    </body>
+  </html>
+  
