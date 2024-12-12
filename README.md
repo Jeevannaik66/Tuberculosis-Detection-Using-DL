@@ -8,6 +8,8 @@ Welcome to the Tuberculosis Detection project repository! This project leverages
 - [Objectives](#objectives)
 - [Features](#features)
 - [Usage](#usage)
+- [Installation](#installation)
+- [Screenshots](#screenshots)
 - [Technologies Used](#technologies-used)
 - [Contributing](#contributing)
 - [License](#license)
@@ -37,6 +39,68 @@ This project aims to develop a user-friendly web-based system that uses advanced
 - Get a real-time diagnosis indicating whether TB is present, along with a confidence score.
 - View the affected regions in the X-ray using Grad-CAM and SHAP/LIME visualization techniques.
 - Use the system for both clinical and research purposes to detect TB early.
+
+## Installation
+
+# Follow these steps to set up and run the Tuberculosis Detection System on your local machine.
+
+# Step 1: Clone the Repository
+# ---------------------------------
+# Clone the GitHub repository and navigate into the project directory.
+git clone https://github.com/Jeevannaik66/Tuberculosis-Detection-Using-DL.git
+cd Tuberculosis-Detection-Using-DL
+
+# Step 2: Set up a Virtual Environment (Optional but Recommended)
+# ----------------------------------------------------------------
+# For Linux/Mac:
+python3 -m venv venv
+source venv/bin/activate
+
+# For Windows:
+python -m venv venv
+venv\Scripts\activate
+
+# Step 3: Install the Required Dependencies
+# ------------------------------------------
+pip install -r requirements.txt
+
+# Step 4: Download or Link the Model Weights
+# -------------------------------------------
+# Place the pre-trained model weights in the models/ directory.
+# Alternatively, follow the instructions provided in the repository to download the model weights.
+
+# Step 5: Run the Application
+# ----------------------------
+python app.py
+
+# Step 6: Access the Application
+# -------------------------------
+# Open your web browser and navigate to:
+# http://127.0.0.1:5000
+# You can see the home page and then navigate to the upload page using the navigation bar. 
+# Upload a chest X-ray image to use the TB detection system.
+
+## Screenshots
+
+### Home Page
+Here’s a screenshot of the **Home page**. You can navigate to the upload page through the navigation bar.
+
+![Home Page](https://link-to-home-page-screenshot)
+
+### Upload Page
+Once on the upload page, you can upload chest X-ray images for TB detection.
+
+![Upload Page](https://link-to-upload-page-screenshot)
+
+### About Page
+The **About page** provides information about the project and its objectives.
+
+![About Page](https://link-to-about-page-screenshot)
+
+### Prevention Page
+The **Prevention page** gives details about tuberculosis prevention methods.
+
+![Prevention Page](https://link-to-prevention-page-screenshot)
 
 ## Technologies Used
 
