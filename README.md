@@ -42,39 +42,39 @@ This project aims to develop a user-friendly web-based system that uses advanced
 
 ## Installation
 
-## Follow these steps to set up and run the Tuberculosis Detection System on your local machine.
+### Follow these steps to set up and run the Tuberculosis Detection System on your local machine.
 
 ### Step 1: Clone the Repository
-## ---------------------------------
-## Clone the GitHub repository and navigate into the project directory.
+### ---------------------------------
+### Clone the GitHub repository and navigate into the project directory.
 - git clone https://github.com/Jeevannaik66/Tuberculosis-Detection-Using-DL.git
 - cd Tuberculosis-Detection-Using-DL
 
 ### Step 2: Set up a Virtual Environment (Optional but Recommended)
-## ----------------------------------------------------------------
-## For Linux/Mac:
+### ----------------------------------------------------------------
+### For Linux/Mac:
 - python3 -m venv venv
 - source venv/bin/activate
 
-## For Windows:
+### For Windows:
 - python -m venv venv
 - venv\Scripts\activate
 
 ### Step 3: Install the Required Dependencies
-## ------------------------------------------
+### ------------------------------------------
 - pip install -r requirements.txt
 
 ### Step 4: Download or Link the Model Weights
-## -------------------------------------------
-## Place the pre-trained model weights in the models/ directory.
-## Alternatively, follow the instructions provided in the repository to download the model weights.
+### -------------------------------------------
+### Place the pre-trained model weights in the models/ directory.
+### Alternatively, follow the instructions provided in the repository to download the model weights.
 
 ### Step 5: Run the Application
-## ----------------------------
+### ----------------------------
 - python app.py
 
 ### Step 6: Access the Application
-## -------------------------------
+### -------------------------------
 ### Open your web browser and navigate to:
 ### http://127.0.0.1:5000
 ### You can see the home page and then navigate to the upload page using the navigation bar. 
