@@ -44,7 +44,7 @@ This project aims to develop a user-friendly web-based system that uses advanced
 
 ### Installation
 
-Follow these steps to set up and run the Tuberculosis Detection System on your local machine.
+Follow these steps to set up and run the **Tuberculosis Detection System** on your local machine.
 
 ### Step 1: Clone the Repository
 ---------------------------------
@@ -56,7 +56,7 @@ Follow these steps to set up and run the Tuberculosis Detection System on your l
 
 ### Step 2: Install Git LFS (Large File Storage)
 -----------------------------------------------
-- Git LFS is used to manage large files (such as model weights) in this repository. To download these large files, you need to install Git LFS.
+Git LFS is used to manage large files (such as model weights) in this repository. To download these large files, you need to install Git LFS.
 
   - **For Windows**:
     - Download the Git LFS installer from [Git LFS website](https://git-lfs.github.com/).
@@ -87,6 +87,14 @@ Follow these steps to set up and run the Tuberculosis Detection System on your l
   git lfs pull
   ```
   This will download the large files (e.g., the model weights) into your local machine.
+
+#### Alternative Step: Manual Download of Model Weights
+- If the `git lfs pull` command fails due to bandwidth limitations, you can download the `precheck_model.h5` and `tb_classification_model.h5` manually.
+- Use these [Google Drive links](https://drive.google.com/drive/folders/1UpqY3iRSj9jFPzi1Gqp5HRXZ9CG9Vgai?usp=drive_link) to download both model files.
+- Download the following models:
+  - `precheck_model.h5`
+  - `tb_classification_model.h5`
+- After downloading, place these files into the `model/` directory of the project.
 
 ### Step 4: Set up a Virtual Environment (Optional but Recommended)
 -------------------------------------------------------------------
@@ -126,7 +134,8 @@ Follow these steps to set up and run the Tuberculosis Detection System on your l
 
 ---
 
-This updated installation guide now includes the necessary steps to install Git LFS and download the model weights. Let me know if you need further assistance!
+### Troubleshooting Tips:
+- If you experience any issues with Git LFS or the model files, ensure that both model files (`precheck_model.h5` and `tb_classification_model.h5`) are placed correctly in the `model/` directory. If you continue to face problems with Git LFS, manually downloading the models from Google Drive and placing them in the appropriate folder should resolve the issue.
 
 
 ## Screenshots
