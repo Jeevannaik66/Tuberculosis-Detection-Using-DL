@@ -184,6 +184,4 @@ The **Prevention page** gives details about tuberculosis prevention methods.
 Contributions are welcome! If you have suggestions for improvements or find any issues, feel free to open an issue or submit a pull request. Your contributions will help improve the accuracy and usability of the system.
 
 ## License
-
-This project is licensed under the MIT License.  
 Feel free to clone or fork the repository and customize it as per your needs. Thank you for visiting!
