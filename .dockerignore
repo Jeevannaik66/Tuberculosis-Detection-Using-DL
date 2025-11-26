@@ -1,0 +1,62 @@
+# Ignore everything by default
+*
+
+# Keep only essential files for deployment
+!app.py
+!requirements.txt
+!model/
+!templates/
+!static/uploads/
+
+# ==========================
+# Python caches & virtual envs
+# ==========================
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+venv/
+C:/Users/Jeevan/Documents/Major Project/venv/
+
+# ==========================
+# Datasets and large training folders
+# ==========================
+dataset/
+Train_dataset/
+test_images/
+Processed/
+Precheckmodel/
+Denset/
+uploads/
+
+# ==========================
+# Development and IDE files
+# ==========================
+.vscode/
+*.ipynb
+*.bak
+*.tmp
+*.swp
+
+# ==========================
+# Logs and temp files
+# ==========================
+*.log
+debug.log
+
+# ==========================
+# Git and system files
+# ==========================
+.gitattributes
+.git/
+.gitignore
+
+# ==========================
+# Not needed Python scripts
+# ==========================
+generate_heatmap.py
+data_preprocessing.py
+train_model.py
+train_densenet_model.py
+plot_confusion_matrix.py
+predict_model.py
