@@ -1,0 +1,1998 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TB Detect - Advanced Tuberculosis Detection</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" />
+    <style>
+      /* Reset and Base Styles */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      :root {
+        --primary-color: #3747bd;
+        --primary-dark: #2d3aa3;
+        --secondary-color: #002359;
+        --accent-color: #fe3448;
+        --success-color: #10b981;
+        --warning-color: #f59e0b;
+        --text-light: #ffffff;
+        --text-dark: #333333;
+        --text-gray: #666666;
+        --background-light: #f7f7f7;
+        --border-color: #e7e7e7;
+        --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        --gradient: linear-gradient(135deg, #3747bd 0%, #002359 100%);
+      }
+
+      body {
+        font-family: 'Poppins', sans-serif;
+        line-height: 1.6;
+        color: var(--text-dark);
+        overflow-x: hidden;
+        background: #ffffff;
+      }
+
+      a {
+        text-decoration: none;
+        color: inherit;
+        transition: all 0.3s ease;
+      }
+
+      /* Utility Classes */
+      .container {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      .section {
+        padding: 100px 0;
+      }
+
+      .section-title {
+        font-size: 3rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        color: var(--secondary-color);
+        text-align: center;
+        position: relative;
+      }
+
+      .section-title::after {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80px;
+        height: 4px;
+        background: var(--primary-color);
+        border-radius: 2px;
+      }
+
+      .section-subtitle {
+        font-size: 1.2rem;
+        color: var(--text-gray);
+        max-width: 600px;
+        margin: 2rem auto 3rem;
+        text-align: center;
+        line-height: 1.6;
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 15px 30px;
+        background: var(--primary-color);
+        color: white;
+        border-radius: 50px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        border: none;
+        cursor: pointer;
+        font-family: 'Poppins', sans-serif;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+        transition: left 0.5s;
+      }
+
+      .btn:hover::before {
+        left: 100%;
+      }
+
+      .btn:hover {
+        background: var(--primary-dark);
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px rgba(55, 71, 189, 0.3);
+      }
+
+      .btn-secondary {
+        background: transparent;
+        border: 2px solid var(--primary-color);
+        color: var(--primary-color);
+      }
+
+      .btn-secondary:hover {
+        background: var(--primary-color);
+        color: white;
+      }
+
+      /* Animations */
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes pulse {
+        0% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.05);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+
+      @keyframes float {
+        0%, 100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-10px);
+        }
+      }
+
+      .animate-fade-in {
+        animation: fadeInUp 0.8s ease-out;
+      }
+
+      .animate-pulse {
+        animation: pulse 2s infinite;
+        animation-delay: 1s;
+      }
+
+      .animate-float {
+        animation: float 3s ease-in-out infinite;
+      }
+
+      /* Header & Navigation */
+      .header {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        position: fixed;
+        width: 100%;
+        top: 0;
+        z-index: 1000;
+        transition: all 0.3s ease;
+      }
+
+      .header.scrolled {
+        padding: 10px 0;
+        background: rgba(255, 255, 255, 0.98);
+      }
+
+      .nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1.5rem 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: var(--secondary-color);
+      }
+
+      .logo i {
+        color: var(--primary-color);
+        font-size: 2rem;
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 2.5rem;
+        list-style: none;
+        align-items: center;
+      }
+
+      .nav-links a {
+        font-family: 'Poppins', sans-serif;
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--secondary-color);
+        text-transform: uppercase;
+        position: relative;
+        padding: 5px 0;
+      }
+
+      .nav-links a::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: var(--primary-color);
+        transition: width 0.3s ease;
+      }
+
+      .nav-links a:hover::after,
+      .nav-links a.active::after {
+        width: 100%;
+      }
+
+      .nav-links a:hover,
+      .nav-links a.active {
+        color: var(--primary-color);
+      }
+
+      .mobile-menu-btn {
+        display: none;
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        color: var(--secondary-color);
+        cursor: pointer;
+        transition: transform 0.3s ease;
+      }
+
+      .mobile-menu-btn:hover {
+        transform: scale(1.1);
+      }
+
+      /* Hero Section */
+      .hero {
+        background: var(--gradient);
+        color: white;
+        padding: 180px 0 120px;
+        margin-top: 80px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80') no-repeat center;
+        background-size: cover;
+        opacity: 0.1;
+      }
+
+      .hero-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+        text-align: center;
+        position: relative;
+        z-index: 2;
+      }
+
+      .hero-title {
+        font-size: 4rem;
+        font-weight: 800;
+        line-height: 1.1;
+        margin-bottom: 1.5rem;
+        text-transform: uppercase;
+        background: linear-gradient(45deg, #ffffff, #e0e7ff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: fadeInUp 1s ease-out;
+      }
+
+      .hero-subtitle {
+        font-size: 1.3rem;
+        margin-bottom: 2.5rem;
+        opacity: 0.9;
+        font-family: 'Open Sans', sans-serif;
+        max-width: 800px;
+        margin-left: auto;
+        margin-right: auto;
+        animation: fadeInUp 1s ease-out 0.2s both;
+      }
+
+      .hero-buttons {
+        display: flex;
+        gap: 1.5rem;
+        justify-content: center;
+        margin-bottom: 3rem;
+        animation: fadeInUp 1s ease-out 0.4s both;
+      }
+
+      .symptoms-section {
+        margin: 4rem 0 0;
+        animation: fadeInUp 1s ease-out 0.6s both;
+      }
+
+      .symptoms-label {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        background: rgba(255, 255, 255, 0.2);
+        padding: 15px 30px;
+        border-radius: 50px;
+        margin-bottom: 2rem;
+        font-weight: 500;
+        text-transform: uppercase;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+      }
+
+      .symptoms-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+        gap: 1.5rem;
+        max-width: 900px;
+        margin: 0 auto;
+      }
+
+      .symptom-item {
+        background: rgba(255, 255, 255, 0.1);
+        padding: 1.5rem 1rem;
+        border-radius: 15px;
+        text-align: center;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        transition: all 0.3s ease;
+        cursor: pointer;
+      }
+
+      .symptom-item:hover {
+        background: rgba(255, 255, 255, 0.2);
+        transform: translateY(-5px);
+      }
+
+      .symptom-item i {
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+        color: #e0e7ff;
+      }
+
+      .symptom-item span {
+        font-family: 'Open Sans', sans-serif;
+        font-size: 1rem;
+        text-transform: capitalize;
+        font-weight: 500;
+      }
+
+      /* Stats Section */
+      .stats {
+        background: var(--background-light);
+        padding: 100px 0;
+        position: relative;
+      }
+
+      .stats::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 100px;
+        background: linear-gradient(to bottom, var(--primary-color), transparent);
+        opacity: 0.1;
+      }
+
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2.5rem;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      .stat-card {
+        background: white;
+        padding: 3rem 2rem;
+        border-radius: 20px;
+        box-shadow: var(--shadow);
+        text-align: center;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .stat-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 5px;
+        background: var(--gradient);
+      }
+
+      .stat-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+      }
+
+      .stat-icon {
+        width: 100px;
+        height: 100px;
+        margin: 0 auto 1.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--gradient);
+        border-radius: 50%;
+        font-size: 2.5rem;
+        color: white;
+        animation: float 3s ease-in-out infinite;
+      }
+
+      .stat-number {
+        font-size: 3rem;
+        font-weight: 800;
+        color: var(--secondary-color);
+        margin-bottom: 0.5rem;
+        font-family: 'Open Sans', sans-serif;
+        background: var(--gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .stat-title {
+        font-size: 1.3rem;
+        font-weight: 600;
+        color: var(--secondary-color);
+        margin-bottom: 1rem;
+        text-transform: uppercase;
+      }
+
+      .stat-desc {
+        color: var(--text-gray);
+        font-family: 'Open Sans', sans-serif;
+        font-size: 0.95rem;
+        line-height: 1.6;
+      }
+
+      /* Symptoms Details Section */
+      .symptoms-details {
+        background: var(--secondary-color);
+        padding: 100px 0;
+        color: white;
+        position: relative;
+      }
+
+      .symptoms-details::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 100px;
+        background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.1));
+      }
+
+      .symptoms-header {
+        text-align: center;
+        margin-bottom: 4rem;
+      }
+
+      .symptoms-main-title {
+        font-size: 3rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        text-transform: capitalize;
+        color: white;
+      }
+
+      .symptoms-main-subtitle {
+        font-size: 1.1rem;
+        opacity: 0.9;
+        max-width: 600px;
+        margin: 0 auto;
+        font-family: 'Open Sans', sans-serif;
+      }
+
+      .symptoms-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 2.5rem;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      .symptom-detail-card {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 20px;
+        padding: 3rem 2rem;
+        text-align: center;
+        transition: all 0.3s ease;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .symptom-detail-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+        transition: left 0.5s;
+      }
+
+      .symptom-detail-card:hover::before {
+        left: 100%;
+      }
+
+      .symptom-detail-card:hover {
+        transform: translateY(-10px);
+        background: rgba(255, 255, 255, 0.15);
+      }
+
+      .symptom-image {
+        width: 120px;
+        height: 120px;
+        background: rgba(255, 255, 255, 0.2);
+        border: 3px solid var(--primary-color);
+        border-radius: 50%;
+        margin: 0 auto 2rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 3rem;
+        color: white;
+        transition: all 0.3s ease;
+      }
+
+      .symptom-detail-card:hover .symptom-image {
+        transform: scale(1.1);
+        background: var(--primary-color);
+      }
+
+      .symptom-name {
+        color: white;
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+      }
+
+      .symptom-description {
+        color: rgba(255, 255, 255, 0.9);
+        font-family: 'Open Sans', sans-serif;
+        font-size: 1rem;
+        line-height: 1.6;
+      }
+
+      /* Do's and Don'ts Section */
+      .dos-donts {
+        background: var(--background-light);
+        padding: 100px 0;
+        position: relative;
+      }
+
+      .dos-donts-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+        gap: 3rem;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      .dos-card, .donts-card {
+        background: white;
+        border-radius: 20px;
+        box-shadow: var(--shadow);
+        overflow: hidden;
+        transition: all 0.3s ease;
+      }
+
+      .dos-card:hover, .donts-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+      }
+
+      .dos-header {
+        background: var(--gradient);
+        padding: 2.5rem;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .dos-header::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+        transform: rotate(45deg);
+        animation: shine 3s infinite;
+      }
+
+      @keyframes shine {
+        0% { transform: translateX(-100%) rotate(45deg); }
+        100% { transform: translateX(100%) rotate(45deg); }
+      }
+
+      .donts-header {
+        background: linear-gradient(135deg, var(--accent-color), #dc2626);
+        padding: 2.5rem;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .donts-header::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+        transform: rotate(45deg);
+        animation: shine 3s infinite;
+      }
+
+      .dos-title, .donts-title {
+        color: white;
+        font-size: 1.5rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        position: relative;
+        z-index: 2;
+      }
+
+      .dos-list, .donts-list {
+        padding: 2.5rem;
+      }
+
+      .dos-item, .donts-item {
+        display: flex;
+        gap: 1.5rem;
+        align-items: flex-start;
+        margin-bottom: 2.5rem;
+        padding: 1.5rem;
+        border-radius: 15px;
+        transition: all 0.3s ease;
+      }
+
+      .dos-item:hover, .donts-item:hover {
+        background: var(--background-light);
+        transform: translateX(10px);
+      }
+
+      .dos-item:last-child, .donts-item:last-child {
+        margin-bottom: 0;
+      }
+
+      .action-icon {
+        flex-shrink: 0;
+        width: 80px;
+        height: 80px;
+        background: white;
+        border-radius: 20px;
+        box-shadow: var(--shadow);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        color: var(--primary-color);
+        transition: all 0.3s ease;
+      }
+
+      .dos-item:hover .action-icon {
+        background: var(--primary-color);
+        color: white;
+        transform: scale(1.1);
+      }
+
+      .donts-item .action-icon {
+        color: var(--accent-color);
+      }
+
+      .donts-item:hover .action-icon {
+        background: var(--accent-color);
+        color: white;
+        transform: scale(1.1);
+      }
+
+      .action-content {
+        flex: 1;
+      }
+
+      .action-title {
+        color: var(--secondary-color);
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+      }
+
+      .action-description {
+        color: var(--text-gray);
+        font-family: 'Open Sans', sans-serif;
+        font-size: 0.95rem;
+        line-height: 1.6;
+      }
+
+      /* FAQ Section */
+      .faq-section {
+        background: white;
+        padding: 100px 0;
+        position: relative;
+      }
+
+      .faq-content {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+        gap: 4rem;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+        align-items: start;
+      }
+
+      .faq-image {
+        background: url('https://images.unsplash.com/photo-1559757148-5c350d0d3c56?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80') no-repeat center;
+        background-size: cover;
+        border-radius: 20px;
+        height: 500px;
+        box-shadow: var(--shadow);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .faq-image::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: var(--gradient);
+        opacity: 0.8;
+        border-radius: 20px;
+      }
+
+      .faq-items {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+      }
+
+      .faq-categories {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 2rem;
+        flex-wrap: wrap;
+      }
+
+      .faq-category {
+        padding: 12px 24px;
+        background: white;
+        border: 2px solid var(--border-color);
+        border-radius: 50px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .faq-category:hover {
+        border-color: var(--primary-color);
+        color: var(--primary-color);
+      }
+
+      .faq-category.active {
+        background: var(--primary-color);
+        border-color: var(--primary-color);
+        color: white;
+      }
+
+      .faq-item {
+        background: white;
+        border-radius: 15px;
+        box-shadow: var(--shadow);
+        padding: 1.5rem;
+        transition: all 0.3s ease;
+        border: 2px solid transparent;
+      }
+
+      .faq-item:hover {
+        border-color: var(--primary-color);
+        transform: translateY(-2px);
+      }
+
+      .faq-question {
+        color: var(--text-dark);
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        cursor: pointer;
+      }
+
+      .faq-question i {
+        color: var(--primary-color);
+        transition: transform 0.3s ease;
+      }
+
+      .faq-item.active .faq-question i {
+        transform: rotate(180deg);
+      }
+
+      .faq-answer {
+        color: var(--text-gray);
+        font-family: 'Open Sans', sans-serif;
+        font-size: 0.95rem;
+        line-height: 1.6;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+      }
+
+      .faq-item.active .faq-answer {
+        max-height: 200px;
+        margin-top: 1rem;
+      }
+
+      /* Prevention Section */
+      .prevention-section {
+        background: var(--gradient);
+        padding: 100px 0;
+        color: white;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .prevention-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('https://images.unsplash.com/photo-1579684385127-1ef15d508118?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80') no-repeat center;
+        background-size: cover;
+        opacity: 0.1;
+      }
+
+      .prevention-section .section-title {
+        color: white;
+      }
+
+      .prevention-section .section-title::after {
+        background: white;
+      }
+
+      .prevention-section .section-subtitle {
+        color: rgba(255, 255, 255, 0.9);
+      }
+
+      .prevention-content {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+        gap: 4rem;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+        align-items: center;
+        position: relative;
+        z-index: 2;
+      }
+
+      .prevention-image {
+        background: url('https://images.unsplash.com/photo-1584634731339-252c581abfc5?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80') no-repeat center;
+        background-size: cover;
+        border-radius: 20px;
+        height: 500px;
+        box-shadow: var(--shadow);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .prevention-image::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: var(--gradient);
+        opacity: 0.3;
+        border-radius: 20px;
+      }
+
+      .prevention-list {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+      }
+
+      .prevention-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 1.5rem;
+        padding: 1.5rem;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 15px;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        transition: all 0.3s ease;
+      }
+
+      .prevention-item:hover {
+        background: rgba(255, 255, 255, 0.2);
+        transform: translateX(10px);
+      }
+
+      .prevention-icon {
+        width: 60px;
+        height: 60px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        flex-shrink: 0;
+        font-size: 1.5rem;
+        transition: all 0.3s ease;
+      }
+
+      .prevention-item:hover .prevention-icon {
+        background: white;
+        color: var(--primary-color);
+        transform: scale(1.1);
+      }
+
+      .prevention-text {
+        flex: 1;
+      }
+
+      .prevention-item-title {
+        color: white;
+        font-size: 1.2rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+      }
+
+      .prevention-item-desc {
+        color: rgba(255, 255, 255, 0.9);
+        font-family: 'Open Sans', sans-serif;
+        font-size: 0.95rem;
+        line-height: 1.6;
+      }
+
+      /* News Section */
+      .news-section {
+        background: white;
+        padding: 100px 0;
+        position: relative;
+      }
+
+      .news-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 2.5rem;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      .news-card {
+        background: white;
+        border-radius: 20px;
+        box-shadow: var(--shadow);
+        overflow: hidden;
+        transition: all 0.3s ease;
+        position: relative;
+      }
+
+      .news-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+      }
+
+      .news-image {
+        height: 250px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .news-img-1 {
+        background: url('https://images.unsplash.com/photo-1559757175-0eb30cd8c063?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80') no-repeat center;
+        background-size: cover;
+      }
+
+      .news-img-2 {
+        background: url('https://images.unsplash.com/photo-1584036561566-baf8f5f1b144?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80') no-repeat center;
+        background-size: cover;
+      }
+
+      .news-img-3 {
+        background: url('https://images.unsplash.com/photo-1583324113626-70df0f4deaab?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80') no-repeat center;
+        background-size: cover;
+      }
+
+      .news-gradient {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 50%;
+        background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+      }
+
+      .news-date {
+        position: absolute;
+        top: 1rem;
+        left: 1rem;
+        background: var(--primary-color);
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 25px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        z-index: 2;
+      }
+
+      .news-content {
+        padding: 2rem;
+      }
+
+      .news-headline {
+        color: var(--text-dark);
+        font-size: 1.2rem;
+        font-weight: 600;
+        line-height: 1.4;
+        margin-bottom: 1rem;
+      }
+
+      .news-location {
+        background: var(--background-light);
+        padding: 0.5rem 1rem;
+        border-radius: 25px;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        border: 2px solid var(--primary-color);
+      }
+
+      .news-location-text {
+        color: var(--primary-color);
+        font-size: 0.8rem;
+        font-weight: 600;
+        text-transform: uppercase;
+      }
+
+      /* Footer */
+      .footer {
+        background: var(--secondary-color);
+        color: white;
+        padding: 80px 0 30px;
+        position: relative;
+      }
+
+      .footer::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 100px;
+        background: linear-gradient(to bottom, var(--primary-color), transparent);
+        opacity: 0.1;
+      }
+
+      .footer-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+        position: relative;
+        z-index: 2;
+      }
+
+      .footer-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 3rem;
+        margin-bottom: 3rem;
+      }
+
+      .footer-brand {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+      }
+
+      .footer-logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: white;
+      }
+
+      .footer-logo i {
+        color: var(--primary-color);
+        font-size: 2rem;
+      }
+
+      .footer-description {
+        color: rgba(255, 255, 255, 0.8);
+        font-family: 'Open Sans', sans-serif;
+        font-size: 0.95rem;
+        line-height: 1.6;
+        max-width: 350px;
+      }
+
+      .footer-column h3 {
+        font-size: 1.2rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        margin-bottom: 1.5rem;
+        color: white;
+      }
+
+      .footer-links {
+        list-style: none;
+      }
+
+      .footer-links li {
+        margin-bottom: 0.75rem;
+      }
+
+      .footer-links a {
+        color: rgba(255, 255, 255, 0.8);
+        font-family: 'Poppins', sans-serif;
+        font-size: 0.95rem;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .footer-links a:hover {
+        color: white;
+        transform: translateX(5px);
+      }
+
+      .social-links {
+        display: flex;
+        gap: 1rem;
+        margin-top: 1.5rem;
+      }
+
+      .social-link {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        background: rgba(255, 255, 255, 0.1);
+        border: 2px solid transparent;
+      }
+
+      .social-link:hover {
+        transform: translateY(-3px);
+        background: var(--primary-color);
+        border-color: var(--primary-color);
+      }
+
+      .footer-bottom {
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        padding-top: 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+
+      .copyright {
+        color: rgba(255, 255, 255, 0.8);
+        font-family: 'Open Sans', sans-serif;
+        font-size: 0.9rem;
+      }
+
+      .footer-bottom-links {
+        display: flex;
+        gap: 2rem;
+      }
+
+      .footer-bottom-links a {
+        color: rgba(255, 255, 255, 0.8);
+        font-family: 'Poppins', sans-serif;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        transition: color 0.3s ease;
+      }
+
+      .footer-bottom-links a:hover {
+        color: white;
+      }
+
+      /* Responsive Design */
+      @media (max-width: 1024px) {
+        .hero-title {
+          font-size: 3rem;
+        }
+        
+        .section-title {
+          font-size: 2.5rem;
+        }
+        
+        .dos-donts-grid,
+        .faq-content,
+        .prevention-content {
+          grid-template-columns: 1fr;
+        }
+        
+        .faq-image,
+        .prevention-image {
+          height: 400px;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .nav {
+          padding: 1rem;
+          flex-wrap: wrap;
+        }
+
+        .nav-links {
+          display: none;
+          width: 100%;
+          flex-direction: column;
+          gap: 1rem;
+          margin-top: 1rem;
+          background: white;
+          padding: 1rem;
+          border-radius: 10px;
+          box-shadow: var(--shadow);
+        }
+
+        .nav-links.active {
+          display: flex;
+        }
+
+        .mobile-menu-btn {
+          display: block;
+        }
+
+        .hero {
+          padding: 140px 0 80px;
+          margin-top: 60px;
+        }
+
+        .hero-title {
+          font-size: 2.5rem;
+        }
+
+        .hero-buttons {
+          flex-direction: column;
+          align-items: center;
+        }
+
+        .section {
+          padding: 80px 0;
+        }
+
+        .section-title {
+          font-size: 2rem;
+        }
+
+        .stats-grid,
+        .symptoms-cards,
+        .news-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .dos-item,
+        .donts-item {
+          flex-direction: column;
+          text-align: center;
+        }
+
+        .action-icon {
+          margin: 0 auto 1rem;
+        }
+
+        .footer-grid {
+          grid-template-columns: 1fr;
+          text-align: center;
+        }
+
+        .footer-bottom {
+          flex-direction: column;
+          text-align: center;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .hero-title {
+          font-size: 2rem;
+        }
+
+        .section-title {
+          font-size: 1.8rem;
+        }
+
+        .symptoms-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .dos-donts-grid,
+        .faq-content,
+        .prevention-content {
+          grid-template-columns: 1fr;
+        }
+
+        .faq-categories {
+          justify-content: center;
+        }
+
+        .prevention-item {
+          flex-direction: column;
+          text-align: center;
+        }
+
+        .prevention-icon {
+          margin: 0 auto 0.5rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Header -->
+    <header class="header">
+      <nav class="nav">
+        <div class="logo">
+          <i class="fas fa-lungs-virus"></i>
+          <span>TB Detect</span>
+        </div>
+        <button class="mobile-menu-btn">
+          <i class="fas fa-bars"></i>
+        </button>
+        <ul class="nav-links">
+          <li><a href="{{ url_for('home') }}" class="active">Home</a></li>
+          <li><a href="{{ url_for('upload') }}">Upload</a></li>
+          <li><a href="{{ url_for('prevention') }}">Prevention</a></li>
+          <li><a href="{{ url_for('about_us') }}">About Us</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="hero-content">
+        <h1 class="hero-title">AI-Powered Tuberculosis Detection</h1>
+        <p class="hero-subtitle">
+          Advanced deep learning technology for instant, accurate chest X-ray analysis and early tuberculosis detection
+        </p>
+        <div class="hero-buttons">
+          <a href="{{ url_for('upload') }}" class="btn animate-pulse">
+            <i class="fas fa-upload"></i>
+            Upload X-Ray Now
+          </a>
+          <a href="#how-it-works" class="btn btn-secondary">
+            <i class="fas fa-play-circle"></i>
+            How It Works
+          </a>
+        </div>
+        
+        <div class="symptoms-section">
+          <div class="symptoms-label">
+            <i class="fas fa-exclamation-triangle"></i>
+            Common TB Symptoms
+          </div>
+          <div class="symptoms-grid">
+            <div class="symptom-item">
+              <i class="fas fa-head-side-virus"></i>
+              <span>Persistent Cough</span>
+            </div>
+            <div class="symptom-item">
+              <i class="fas fa-tired"></i>
+              <span>Fatigue</span>
+            </div>
+            <div class="symptom-item">
+              <i class="fas fa-temperature-high"></i>
+              <span>Fever</span>
+            </div>
+            <div class="symptom-item">
+              <i class="fas fa-weight"></i>
+              <span>Weight Loss</span>
+            </div>
+            <div class="symptom-item">
+              <i class="fas fa-bed"></i>
+              <span>Night Sweats</span>
+            </div>
+            <div class="symptom-item">
+              <i class="fas fa-lungs"></i>
+              <span>Chest Pain</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats">
+      <h2 class="section-title">Global TB Impact</h2>
+      <p class="section-subtitle">
+        Understanding the worldwide challenge of tuberculosis and our mission to combat it
+      </p>
+      
+      <div class="stats-grid">
+        <div class="stat-card" data-aos="fade-up" data-aos-delay="100">
+          <div class="stat-icon">
+            <i class="fas fa-virus"></i>
+          </div>
+          <div class="stat-number">10.6M</div>
+          <h3 class="stat-title">Annual Cases</h3>
+          <p class="stat-desc">Addressing the global challenge of 10.6 million annual tuberculosis cases worldwide with advanced detection technology</p>
+        </div>
+        
+        <div class="stat-card" data-aos="fade-up" data-aos-delay="200">
+          <div class="stat-icon">
+            <i class="fas fa-heartbeat"></i>
+          </div>
+          <div class="stat-number">1.6M</div>
+          <h3 class="stat-title">Annual Deaths</h3>
+          <p class="stat-desc">Confronting the tragic toll of 1.6 million tuberculosis deaths each year through early detection and prevention</p>
+        </div>
+        
+        <div class="stat-card" data-aos="fade-up" data-aos-delay="300">
+          <div class="stat-icon">
+            <i class="fas fa-user-check"></i>
+          </div>
+          <div class="stat-number">66M</div>
+          <h3 class="stat-title">Lives Saved</h3>
+          <p class="stat-desc">Celebrating 66 million lives saved through improved diagnosis, treatment, and global health initiatives</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Symptoms Details Section -->
+    <section class="symptoms-details">
+      <div class="symptoms-header">
+        <h2 class="symptoms-main-title">Recognize TB Symptoms</h2>
+        <p class="symptoms-main-subtitle">
+          Early detection saves lives. Learn to identify the key symptoms of tuberculosis for timely intervention
+        </p>
+      </div>
+      
+      <div class="symptoms-cards">
+        <div class="symptom-detail-card" data-aos="fade-right" data-aos-delay="100">
+          <div class="symptom-image">
+            <i class="fas fa-lungs"></i>
+          </div>
+          <h3 class="symptom-name">Persistent Cough</h3>
+          <p class="symptom-description">
+            Lasting over three weeks, often with mucus or blood. This results from lung tissue damage and inflammation caused by TB bacteria.
+          </p>
+        </div>
+        
+        <div class="symptom-detail-card" data-aos="fade-up" data-aos-delay="200">
+          <div class="symptom-image">
+            <i class="fas fa-heart"></i>
+          </div>
+          <h3 class="symptom-name">Chest Pain</h3>
+          <p class="symptom-description">
+            Sharp or dull pain that worsens with coughing or deep breathing. Caused by inflammation and infection in lung tissues.
+          </p>
+        </div>
+        
+        <div class="symptom-detail-card" data-aos="fade-left" data-aos-delay="300">
+          <div class="symptom-image">
+            <i class="fas fa-battery-quarter"></i>
+          </div>
+          <h3 class="symptom-name">Fatigue & Weakness</h3>
+          <p class="symptom-description">
+            Overwhelming tiredness that doesn't improve with rest. The immune system's constant battle against TB drains energy reserves.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Do's and Don'ts Section -->
+    <section class="dos-donts">
+      <h2 class="section-title">TB Prevention Guide</h2>
+      <p class="section-subtitle">
+        Essential practices to protect yourself and others from tuberculosis infection
+      </p>
+      
+      <div class="dos-donts-grid">
+        <div class="dos-card" data-aos="fade-right">
+          <div class="dos-header">
+            <h3 class="dos-title">Do's - Protective Measures</h3>
+          </div>
+          <div class="dos-list">
+            <div class="dos-item">
+              <div class="action-icon">
+                <i class="fas fa-stethoscope"></i>
+              </div>
+              <div class="action-content">
+                <h4 class="action-title">Seek Medical Attention</h4>
+                <p class="action-description">
+                  Consult healthcare providers immediately for persistent symptoms. Early diagnosis enables effective treatment and prevents complications.
+                </p>
+              </div>
+            </div>
+            
+            <div class="dos-item">
+              <div class="action-icon">
+                <i class="fas fa-vial"></i>
+              </div>
+              <div class="action-content">
+                <h4 class="action-title">Complete TB Testing</h4>
+                <p class="action-description">
+                  Undergo comprehensive testing if exposed to TB. Early detection through skin tests, blood tests, and chest X-rays saves lives.
+                </p>
+              </div>
+            </div>
+            
+            <div class="dos-item">
+              <div class="action-icon">
+                <i class="fas fa-head-side-mask"></i>
+              </div>
+              <div class="action-content">
+                <h4 class="action-title">Wear Protective Masks</h4>
+                <p class="action-description">
+                  Use N95 masks in healthcare settings and crowded areas. Proper masking significantly reduces airborne transmission risk.
+                </p>
+              </div>
+            </div>
+            
+            <div class="dos-item">
+              <div class="action-icon">
+                <i class="fas fa-hands-wash"></i>
+              </div>
+              <div class="action-content">
+                <h4 class="action-title">Practice Respiratory Hygiene</h4>
+                <p class="action-description">
+                  Cover mouth when coughing/sneezing. Use tissues or elbow to prevent droplet spread. Dispose of tissues safely.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="donts-card" data-aos="fade-left">
+          <div class="donts-header">
+            <h3 class="donts-title">Don'ts - Risk Avoidance</h3>
+          </div>
+          <div class="donts-list">
+            <div class="donts-item">
+              <div class="action-icon">
+                <i class="fas fa-times-circle"></i>
+              </div>
+              <div class="action-content">
+                <h4 class="action-title">Don't Ignore Symptoms</h4>
+                <p class="action-description">
+                  Never dismiss persistent cough, fever, or weight loss. Delayed treatment increases complications and transmission risks.
+                </p>
+              </div>
+            </div>
+            
+            <div class="donts-item">
+              <div class="action-icon">
+                <i class="fas fa-users-slash"></i>
+              </div>
+              <div class="action-content">
+                <h4 class="action-title">Avoid Close Contact</h4>
+                <p class="action-description">
+                  Maintain distance from active TB patients. TB spreads through airborne droplets in enclosed, poorly ventilated spaces.
+                </p>
+              </div>
+            </div>
+            
+            <div class="donts-item">
+              <div class="action-icon">
+                <i class="fas fa-building"></i>
+              </div>
+              <div class="action-content">
+                <h4 class="action-title">Avoid Crowded Spaces</h4>
+                <p class="action-description">
+                  Steer clear of poorly ventilated, crowded areas. TB bacteria can linger in the air for hours in enclosed environments.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq-section">
+      <h2 class="section-title">Frequently Asked Questions</h2>
+      <p class="section-subtitle">
+        Get answers to common questions about tuberculosis detection, prevention, and treatment
+      </p>
+      
+      <div class="faq-content">
+        <div class="faq-image" data-aos="fade-right"></div>
+        <div class="faq-items" data-aos="fade-left">
+          <div class="faq-categories">
+            <div class="faq-category active">General</div>
+            <div class="faq-category">Symptoms</div>
+            <div class="faq-category">Prevention</div>
+            <div class="faq-category">Treatment</div>
+          </div>
+          
+          <div class="faq-item active">
+            <div class="faq-question">
+              What is tuberculosis and how does it spread?
+              <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="faq-answer">
+              Tuberculosis (TB) is a contagious bacterial infection caused by Mycobacterium tuberculosis. It primarily affects the lungs but can spread to other organs. TB spreads through airborne droplets when an infected person coughs, sneezes, or speaks.
+            </div>
+          </div>
+          
+          <div class="faq-item">
+            <div class="faq-question">
+              How accurate is AI-based TB detection?
+              <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="faq-answer">
+              Our deep learning model achieves over 95% accuracy in detecting tuberculosis patterns from chest X-rays. It's trained on thousands of validated medical images and continuously improves through machine learning.
+            </div>
+          </div>
+          
+          <div class="faq-item">
+            <div class="faq-question">
+              What are the early warning signs of TB?
+              <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="faq-answer">
+              Early signs include persistent cough (3+ weeks), mild fever, night sweats, fatigue, and unexplained weight loss. Early detection significantly improves treatment outcomes.
+            </div>
+          </div>
+          
+          <div class="faq-item">
+            <div class="faq-question">
+              How can I protect my family from TB?
+              <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="faq-answer">
+              Ensure good ventilation at home, practice respiratory hygiene, maintain healthy immunity, and seek immediate testing if exposed. BCG vaccination provides partial protection in high-risk areas.
+            </div>
+          </div>
+          
+          <div class="faq-item">
+            <div class="faq-question">
+              Is tuberculosis completely curable?
+              <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="faq-answer">
+              Yes, with proper antibiotic treatment over 6-9 months, TB is completely curable. Strict adherence to medication is crucial to prevent drug-resistant strains.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Prevention Section -->
+    <section class="prevention-section">
+      <h2 class="section-title">Protection Strategies</h2>
+      <p class="section-subtitle">
+        Comprehensive approaches to safeguard yourself and your community from tuberculosis
+      </p>
+      
+      <div class="prevention-content">
+        <div class="prevention-image" data-aos="fade-right"></div>
+        <div class="prevention-list" data-aos="fade-left">
+          <div class="prevention-item">
+            <div class="prevention-icon">
+              <i class="fas fa-syringe"></i>
+            </div>
+            <div class="prevention-text">
+              <h3 class="prevention-item-title">Vaccination & Immunization</h3>
+              <p class="prevention-item-desc">
+                BCG vaccination provides crucial protection, especially for children in high-prevalence regions. Consult healthcare providers for vaccination recommendations.
+              </p>
+            </div>
+          </div>
+          
+          <div class="prevention-item">
+            <div class="prevention-icon">
+              <i class="fas fa-hand-sparkles"></i>
+            </div>
+            <div class="prevention-text">
+              <h3 class="prevention-item-title">Hygiene & Sanitation</h3>
+              <p class="prevention-item-desc">
+                Regular handwashing, respiratory etiquette, and proper ventilation significantly reduce transmission risks in households and communities.
+              </p>
+            </div>
+          </div>
+          
+          <div class="prevention-item">
+            <div class="prevention-icon">
+              <i class="fas fa-shield-virus"></i>
+            </div>
+            <div class="prevention-text">
+              <h3 class="prevention-item-title">Personal Protection</h3>
+              <p class="prevention-item-desc">
+                Use appropriate masks in high-risk settings, maintain social distancing, and avoid crowded, poorly ventilated spaces whenever possible.
+              </p>
+            </div>
+          </div>
+          
+          <div class="prevention-item">
+            <div class="prevention-icon">
+              <i class="fas fa-apple-alt"></i>
+            </div>
+            <div class="prevention-text">
+              <h3 class="prevention-item-title">Healthy Lifestyle</h3>
+              <p class="prevention-item-desc">
+                Balanced nutrition, regular exercise, adequate sleep, and stress management strengthen immune systems against TB infection.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- News Section -->
+    <section class="news-section">
+      <h2 class="section-title">Latest TB Updates</h2>
+      <p class="section-subtitle">
+        Stay informed about the latest developments in tuberculosis research and global health initiatives
+      </p>
+      
+      <div class="news-grid">
+        <div class="news-card" data-aos="fade-up" data-aos-delay="100">
+          <div class="news-image news-img-1">
+            <div class="news-date">Apr 14, 2024</div>
+            <div class="news-gradient"></div>
+          </div>
+          <div class="news-content">
+            <h3 class="news-headline">Breakthrough in AI Diagnostics Shows 98% Accuracy in Early TB Detection</h3>
+            <div class="news-location">
+              <i class="fas fa-map-marker-alt"></i>
+              <span class="news-location-text">Global Research</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="news-card" data-aos="fade-up" data-aos-delay="200">
+          <div class="news-image news-img-2">
+            <div class="news-date">Mar 27, 2024</div>
+            <div class="news-gradient"></div>
+          </div>
+          <div class="news-content">
+            <h3 class="news-headline">WHO Reports Significant Progress in Global TB Elimination Efforts</h3>
+            <div class="news-location">
+              <i class="fas fa-map-marker-alt"></i>
+              <span class="news-location-text">Geneva, Switzerland</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="news-card" data-aos="fade-up" data-aos-delay="300">
+          <div class="news-image news-img-3">
+            <div class="news-date">Feb 15, 2024</div>
+            <div class="news-gradient"></div>
+          </div>
+          <div class="news-content">
+            <h3 class="news-headline">New Rapid Testing Technology Reduces Diagnosis Time from Weeks to Hours</h3>
+            <div class="news-location">
+              <i class="fas fa-map-marker-alt"></i>
+              <span class="news-location-text">Boston, USA</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="footer-content">
+        <div class="footer-grid">
+          <div class="footer-brand">
+            <div class="footer-logo">
+              <i class="fas fa-lungs-virus"></i>
+              <span>TB Detect</span>
+            </div>
+            <p class="footer-description">
+              Pioneering AI-powered tuberculosis detection to create a world free from TB. Advanced technology, compassionate care, global impact.
+            </p>
+            <div class="social-links">
+              <a href="#" class="social-link">
+                <i class="fab fa-facebook-f"></i>
+              </a>
+              <a href="#" class="social-link">
+                <i class="fab fa-twitter"></i>
+              </a>
+              <a href="#" class="social-link">
+                <i class="fab fa-linkedin-in"></i>
+              </a>
+              <a href="#" class="social-link">
+                <i class="fab fa-instagram"></i>
+              </a>
+            </div>
+          </div>
+          
+          <div class="footer-column">
+            <h3>Quick Links</h3>
+            <ul class="footer-links">
+              <li><a href="{{ url_for('home') }}"><i class="fas fa-home"></i> Home</a></li>
+              <li><a href="{{ url_for('upload') }}"><i class="fas fa-upload"></i> Upload X-Ray</a></li>
+              <li><a href="{{ url_for('prevention') }}"><i class="fas fa-shield-alt"></i> Prevention</a></li>
+              <li><a href="{{ url_for('about_us') }}"><i class="fas fa-info-circle"></i> About Us</a></li>
+            </ul>
+          </div>
+          
+          <div class="footer-column">
+            <h3>Resources</h3>
+            <ul class="footer-links">
+              <li><a href="#"><i class="fas fa-globe"></i> WHO Guidelines</a></li>
+              <li><a href="#"><i class="fas fa-book-medical"></i> Research Papers</a></li>
+              <li><a href="#"><i class="fas fa-chart-line"></i> Statistics</a></li>
+              <li><a href="#"><i class="fas fa-download"></i> Mobile App</a></li>
+            </ul>
+          </div>
+          
+          <div class="footer-column">
+            <h3>Support</h3>
+            <ul class="footer-links">
+              <li><a href="#"><i class="fas fa-question-circle"></i> Help Center</a></li>
+              <li><a href="#"><i class="fas fa-phone-alt"></i> Contact Us</a></li>
+              <li><a href="#"><i class="fas fa-bug"></i> Report Issue</a></li>
+              <li><a href="#"><i class="fas fa-comments"></i> Feedback</a></li>
+            </ul>
+          </div>
+        </div>
+        
+        <div class="footer-bottom">
+          <div class="copyright">© 2024 TB Detect. All rights reserved. Fighting TB with AI innovation.</div>
+          <div class="footer-bottom-links">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+            <a href="#">Cookie Policy</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script>
+      // Initialize AOS animations
+      AOS.init({
+        duration: 1000,
+        once: true,
+        offset: 100
+      });
+
+      // Mobile menu toggle
+      document.querySelector('.mobile-menu-btn').addEventListener('click', function() {
+        document.querySelector('.nav-links').classList.toggle('active');
+        this.querySelector('i').classList.toggle('fa-bars');
+        this.querySelector('i').classList.toggle('fa-times');
+      });
+
+      // Header scroll effect
+      window.addEventListener('scroll', function() {
+        const header = document.querySelector('.header');
+        if (window.scrollY > 100) {
+          header.classList.add('scrolled');
+        } else {
+          header.classList.remove('scrolled');
+        }
+      });
+
+      // FAQ accordion functionality
+      document.querySelectorAll('.faq-question').forEach(question => {
+        question.addEventListener('click', () => {
+          const item = question.parentElement;
+          const isActive = item.classList.contains('active');
+          
+          // Close all items
+          document.querySelectorAll('.faq-item').forEach(faqItem => {
+            faqItem.classList.remove('active');
+          });
+          
+          // Open clicked item if it wasn't active
+          if (!isActive) {
+            item.classList.add('active');
+          }
+        });
+      });
+
+      // FAQ category switching
+      document.querySelectorAll('.faq-category').forEach(category => {
+        category.addEventListener('click', () => {
+          document.querySelectorAll('.faq-category').forEach(cat => cat.classList.remove('active'));
+          category.classList.add('active');
+        });
+      });
+
+      // Smooth scrolling for anchor links
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+          e.preventDefault();
+          const target = document.querySelector(this.getAttribute('href'));
+          if (target) {
+            target.scrollIntoView({
+              behavior: 'smooth',
+              block: 'start'
+            });
+          }
+        });
+      });
+
+      // Add loading animation to cards on scroll
+      const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+      };
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = '1';
+            entry.target.style.transform = 'translateY(0)';
+          }
+        });
+      }, observerOptions);
+
+      // Observe all cards for animation
+      document.querySelectorAll('.stat-card, .symptom-detail-card, .news-card').forEach(card => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(30px)';
+        card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        observer.observe(card);
+      });
+    </script>
+  </body>
+</html>

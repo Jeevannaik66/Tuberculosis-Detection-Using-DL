@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Upload X-Ray - TB Detect</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+      /* Reset and Base Styles */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      :root {
+        --primary-color: #3747bd;
+        --primary-dark: #2d3aa3;
+        --secondary-color: #002359;
+        --accent-color: #fe3448;
+        --success-color: #10b981;
+        --warning-color: #f59e0b;
+        --text-light: #ffffff;
+        --text-dark: #333333;
+        --text-gray: #666666;
+        --background-light: #f7f7f7;
+        --border-color: #e7e7e7;
+        --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        --gradient: linear-gradient(135deg, #3747bd 0%, #002359 100%);
+      }
+
+      body {
+        font-family: 'Poppins', sans-serif;
+        line-height: 1.6;
+        color: var(--text-dark);
+        overflow-x: hidden;
+        background: #ffffff;
+      }
+
+      a {
+        text-decoration: none;
+        color: inherit;
+        transition: all 0.3s ease;
+      }
+
+      /* Header & Navigation */
+      .header {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        position: fixed;
+        width: 100%;
+        top: 0;
+        z-index: 1000;
+        transition: all 0.3s ease;
+      }
+
+      .header.scrolled {
+        padding: 10px 0;
+        background: rgba(255, 255, 255, 0.98);
+      }
+
+      .nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1.5rem 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: var(--secondary-color);
+      }
+
+      .logo i {
+        color: var(--primary-color);
+        font-size: 2rem;
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 2.5rem;
+        list-style: none;
+        align-items: center;
+      }
+
+      .nav-links a {
+        font-family: 'Poppins', sans-serif;
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--secondary-color);
+        text-transform: uppercase;
+        position: relative;
+        padding: 5px 0;
+      }
+
+      .nav-links a::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: var(--primary-color);
+        transition: width 0.3s ease;
+      }
+
+      .nav-links a:hover::after,
+      .nav-links a.active::after {
+        width: 100%;
+      }
+
+      .nav-links a:hover,
+      .nav-links a.active {
+        color: var(--primary-color);
+      }
+
+      .mobile-menu-btn {
+        display: none;
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        color: var(--secondary-color);
+        cursor: pointer;
+        transition: transform 0.3s ease;
+      }
+
+      .mobile-menu-btn:hover {
+        transform: scale(1.1);
+      }
+
+      /* Hero Section */
+      .hero {
+        background: var(--gradient);
+        color: white;
+        padding: 180px 0 120px;
+        margin-top: 80px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80') no-repeat center;
+        background-size: cover;
+        opacity: 0.1;
+      }
+
+      .hero-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+        text-align: center;
+        position: relative;
+        z-index: 2;
+      }
+
+      .hero-title {
+        font-size: 4rem;
+        font-weight: 800;
+        line-height: 1.1;
+        margin-bottom: 1.5rem;
+        text-transform: uppercase;
+        background: linear-gradient(45deg, #ffffff, #e0e7ff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .hero-subtitle {
+        font-size: 1.3rem;
+        margin-bottom: 2.5rem;
+        opacity: 0.9;
+        font-family: 'Open Sans', sans-serif;
+        max-width: 800px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .breadcrumb {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        margin-top: 2rem;
+      }
+
+      .breadcrumb a {
+        color: rgba(255, 255, 255, 0.8);
+        transition: color 0.3s ease;
+      }
+
+      .breadcrumb a:hover {
+        color: white;
+      }
+
+      .breadcrumb span {
+        color: white;
+        font-weight: 600;
+      }
+
+      .breadcrumb i {
+        font-size: 0.8rem;
+        color: rgba(255, 255, 255, 0.6);
+      }
+
+      /* Upload Section */
+      .upload-section {
+        background: white;
+        padding: 100px 0;
+        position: relative;
+      }
+
+      .upload-container {
+        max-width: 800px;
+        margin: 0 auto;
+        background: white;
+        border-radius: 20px;
+        box-shadow: var(--shadow);
+        padding: 3rem;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .upload-container::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 5px;
+        background: var(--gradient);
+      }
+
+      .upload-header {
+        text-align: center;
+        margin-bottom: 2.5rem;
+      }
+
+      .upload-title {
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--secondary-color);
+        margin-bottom: 1rem;
+      }
+
+      .upload-subtitle {
+        color: var(--text-gray);
+        font-family: 'Open Sans', sans-serif;
+        font-size: 1rem;
+        line-height: 1.6;
+      }
+
+      .upload-area {
+        border: 3px dashed var(--border-color);
+        border-radius: 15px;
+        padding: 3rem 2rem;
+        text-align: center;
+        transition: all 0.3s ease;
+        margin-bottom: 2rem;
+        cursor: pointer;
+        position: relative;
+      }
+
+      .upload-area:hover {
+        border-color: var(--primary-color);
+        background: rgba(55, 71, 189, 0.05);
+      }
+
+      .upload-area.active {
+        border-color: var(--success-color);
+        background: rgba(16, 185, 129, 0.05);
+      }
+
+      .upload-icon {
+        font-size: 4rem;
+        color: var(--primary-color);
+        margin-bottom: 1.5rem;
+        transition: all 0.3s ease;
+      }
+
+      .upload-area:hover .upload-icon {
+        transform: scale(1.1);
+        color: var(--primary-dark);
+      }
+
+      .upload-text {
+        color: var(--text-gray);
+        font-family: 'Open Sans', sans-serif;
+        margin-bottom: 1.5rem;
+      }
+
+      .upload-text strong {
+        color: var(--primary-color);
+      }
+
+      .file-input {
+        display: none;
+      }
+
+      .file-info {
+        display: none;
+        background: var(--background-light);
+        padding: 1rem;
+        border-radius: 10px;
+        margin-top: 1rem;
+        text-align: left;
+      }
+
+      .file-info.active {
+        display: block;
+      }
+
+      .file-name {
+        font-weight: 600;
+        color: var(--secondary-color);
+        margin-bottom: 0.5rem;
+      }
+
+      .file-size {
+        color: var(--text-gray);
+        font-size: 0.9rem;
+      }
+
+      .upload-actions {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        margin-top: 2rem;
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 15px 30px;
+        background: var(--primary-color);
+        color: white;
+        border-radius: 50px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        border: none;
+        cursor: pointer;
+        font-family: 'Poppins', sans-serif;
+        position: relative;
+        overflow: hidden;
+        text-decoration: none;
+      }
+
+      .btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+        transition: left 0.5s;
+      }
+
+      .btn:hover::before {
+        left: 100%;
+      }
+
+      .btn:hover {
+        background: var(--primary-dark);
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px rgba(55, 71, 189, 0.3);
+      }
+
+      .btn-secondary {
+        background: transparent;
+        border: 2px solid var(--primary-color);
+        color: var(--primary-color);
+      }
+
+      .btn-secondary:hover {
+        background: var(--primary-color);
+        color: white;
+      }
+
+      /* Results Section */
+      .results-section {
+        background: var(--background-light);
+        padding: 100px 0;
+        position: relative;
+      }
+
+      .results-container {
+        max-width: 1000px;
+        margin: 0 auto;
+      }
+
+      .result-card {
+        background: white;
+        border-radius: 20px;
+        box-shadow: var(--shadow);
+        padding: 3rem;
+        margin-bottom: 2rem;
+        transition: all 0.3s ease;
+      }
+
+      .result-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+      }
+
+      .result-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+        padding-bottom: 1rem;
+        border-bottom: 2px solid var(--border-color);
+      }
+
+      .result-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--secondary-color);
+      }
+
+      .result-status {
+        padding: 0.5rem 1.5rem;
+        border-radius: 50px;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.9rem;
+      }
+
+      .status-yes {
+        background: rgba(239, 68, 68, 0.1);
+        color: #dc2626;
+        border: 1px solid rgba(239, 68, 68, 0.2);
+      }
+
+      .status-no {
+        background: rgba(16, 185, 129, 0.1);
+        color: #059669;
+        border: 1px solid rgba(16, 185, 129, 0.2);
+      }
+
+      .image-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+        margin-bottom: 2rem;
+      }
+
+      .image-box {
+        text-align: center;
+      }
+
+      .image-label {
+        font-weight: 600;
+        color: var(--secondary-color);
+        margin-bottom: 1rem;
+        display: block;
+      }
+
+      .result-image {
+        width: 100%;
+        max-width: 400px;
+        border-radius: 10px;
+        box-shadow: var(--shadow);
+        transition: all 0.3s ease;
+      }
+
+      .result-image:hover {
+        transform: scale(1.02);
+      }
+
+      .result-details {
+        background: var(--background-light);
+        border-radius: 15px;
+        padding: 2rem;
+        margin-top: 2rem;
+      }
+
+      .detail-table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      .detail-table th,
+      .detail-table td {
+        padding: 1rem;
+        text-align: left;
+        border-bottom: 1px solid var(--border-color);
+      }
+
+      .detail-table th {
+        color: var(--secondary-color);
+        font-weight: 600;
+        width: 30%;
+      }
+
+      .detail-table td {
+        color: var(--text-dark);
+        font-weight: 500;
+      }
+
+      .confidence-bar {
+        height: 10px;
+        background: var(--border-color);
+        border-radius: 5px;
+        overflow: hidden;
+        margin-top: 0.5rem;
+      }
+
+      .confidence-fill {
+        height: 100%;
+        background: var(--primary-color);
+        border-radius: 5px;
+        transition: width 1s ease;
+      }
+
+      .result-actions {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        margin-top: 2rem;
+      }
+
+      /* Alerts */
+      .alert {
+        padding: 1rem 1.5rem;
+        border-radius: 10px;
+        margin-bottom: 2rem;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .alert-danger {
+        background: rgba(239, 68, 68, 0.1);
+        border: 1px solid rgba(239, 68, 68, 0.2);
+        color: #dc2626;
+      }
+
+      .alert i {
+        font-size: 1.2rem;
+      }
+
+      /* Center class for forms */
+      .center {
+        text-align: center;
+      }
+
+      /* Large image class - UPDATED FOR BETTER ALIGNMENT */
+      .large {
+        max-width: 100%;
+        height: auto;
+        border-radius: 10px;
+        box-shadow: var(--shadow);
+        display: block;
+        margin: 0 auto;
+      }
+
+      /* NEW: Image container for better centering */
+      .image-display-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 2rem 0;
+        padding: 1rem;
+        background: var(--background-light);
+        border-radius: 15px;
+        min-height: 300px;
+      }
+
+      /* NEW: Image wrapper for better control */
+      .image-wrapper {
+        max-width: 100%;
+        text-align: center;
+      }
+
+      /* NEW: Image caption */
+      .image-caption {
+        margin-top: 1rem;
+        font-weight: 600;
+        color: var(--secondary-color);
+      }
+
+      /* Result table styles */
+      .result-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 1rem 0;
+      }
+
+      .result-table th,
+      .result-table td {
+        padding: 1rem;
+        text-align: left;
+        border-bottom: 1px solid var(--border-color);
+      }
+
+      .result-table th {
+        color: var(--secondary-color);
+        font-weight: 600;
+        width: 30%;
+      }
+
+      .result-table td {
+        color: var(--text-dark);
+        font-weight: 500;
+      }
+
+      .result-table .yes {
+        color: #dc2626;
+        font-weight: 700;
+      }
+
+      .result-table .NO {
+        color: #059669;
+        font-weight: 700;
+      }
+
+      /* NEW: Loading animation */
+      .loading-spinner {
+        display: none;
+        text-align: center;
+        padding: 2rem;
+      }
+
+      .spinner {
+        width: 40px;
+        height: 40px;
+        border: 4px solid rgba(55, 71, 189, 0.2);
+        border-left: 4px solid var(--primary-color);
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin: 0 auto;
+      }
+
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+
+      /* Responsive Design */
+      @media (max-width: 768px) {
+        .nav {
+          padding: 1rem;
+          flex-wrap: wrap;
+        }
+
+        .nav-links {
+          display: none;
+          width: 100%;
+          flex-direction: column;
+          gap: 1rem;
+          margin-top: 1rem;
+          background: white;
+          padding: 1rem;
+          border-radius: 10px;
+          box-shadow: var(--shadow);
+        }
+
+        .nav-links.active {
+          display: flex;
+        }
+
+        .mobile-menu-btn {
+          display: block;
+        }
+
+        .hero {
+          padding: 140px 0 80px;
+          margin-top: 60px;
+        }
+
+        .hero-title {
+          font-size: 2.5rem;
+        }
+
+        .upload-container {
+          padding: 2rem;
+        }
+
+        .upload-actions,
+        .result-actions {
+          flex-direction: column;
+        }
+
+        .image-container {
+          grid-template-columns: 1fr;
+        }
+
+        /* NEW: Responsive image display */
+        .image-display-container {
+          padding: 0.5rem;
+          min-height: 200px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .hero-title {
+          font-size: 2rem;
+        }
+
+        .upload-container {
+          padding: 1.5rem;
+        }
+
+        .upload-area {
+          padding: 2rem 1rem;
+        }
+
+        .result-card {
+          padding: 2rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Header -->
+    <header class="header">
+      <nav class="nav">
+        <div class="logo">
+          <i class="fas fa-lungs-virus"></i>
+          <span>TB Detect</span>
+        </div>
+        <button class="mobile-menu-btn">
+          <i class="fas fa-bars"></i>
+        </button>
+        <ul class="nav-links">
+          <li><a href="{{ url_for('home') }}">Home</a></li>
+          <li><a href="{{ url_for('upload') }}" class="active">Upload</a></li>
+          <li><a href="{{ url_for('prevention') }}">Prevention</a></li>
+          <li><a href="{{ url_for('about_us') }}">About Us</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="hero-content">
+        <h1 class="hero-title">Upload X-Ray for TB Detection</h1>
+        <p class="hero-subtitle">
+          Advanced AI-powered analysis of chest X-rays for accurate tuberculosis detection. 
+          Upload your X-ray image and get instant results with detailed insights.
+        </p>
+        
+        <div class="breadcrumb">
+          <a href="{{ url_for('home') }}">Home</a>
+          <i class="fas fa-chevron-right"></i>
+          <span>Upload X-Ray</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Upload Section -->
+    <section class="upload-section">
+      <div class="container">
+        <div class="upload-container">
+          <div class="upload-header">
+            <h2 class="upload-title">Upload Chest X-Ray Image</h2>
+            <p class="upload-subtitle">
+              Supported formats: JPG, JPEG, PNG. Maximum file size: 10MB. 
+              For best results, use clear, high-quality chest X-ray images.
+            </p>
+          </div>
+
+          <!-- Alert Messages -->
+          <div id="alertContainer">
+            {% with messages = get_flashed_messages() %}
+              {% if messages %}
+                <div class="alert alert-danger">
+                  <i class="fas fa-exclamation-triangle"></i>
+                  <div>
+                    {% for message in messages %}
+                      <div>{{ message }}</div>
+                    {% endfor %}
+                  </div>
+                </div>
+              {% endif %}
+            {% endwith %}
+          </div>
+
+          <!-- Image Upload Form - EXACT SAME AS ORIGINAL -->
+          <form action="/upload" method="POST" enctype="multipart/form-data" class="center">
+            <div class="upload-area" id="uploadArea">
+              <i class="fas fa-cloud-upload-alt upload-icon"></i>
+              <p class="upload-text">
+                <strong>Click to upload</strong> or drag and drop your chest X-ray image
+              </p>
+              <p class="upload-text">
+                Supported formats: JPG, JPEG, PNG (Max: 10MB)
+              </p>
+              <input type="file" name="file" id="fileInput" class="file-input" accept=".jpg,.jpeg,.png" required>
+            </div>
+
+            <div class="file-info" id="fileInfo">
+              <div class="file-name" id="fileName"></div>
+              <div class="file-size" id="fileSize"></div>
+            </div>
+
+            <div class="upload-actions">
+              <button type="submit" class="btn">
+                <i class="fas fa-upload"></i>
+                Upload
+              </button>
+              <button type="button" class="btn btn-secondary" id="resetBtn">
+                <i class="fas fa-redo"></i>
+                Reset
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- Results Section -->
+    <section class="results-section">
+      <div class="container">
+        <div class="results-container">
+          <!-- Loading Spinner -->
+          <div class="loading-spinner" id="loadingSpinner">
+            <div class="spinner"></div>
+            <p>Processing your image...</p>
+          </div>
+
+          <!-- Display Uploaded Image - UPDATED FOR BETTER ALIGNMENT -->
+          {% if image_file %}
+            <div class="result-card">
+              <h3>Uploaded Image</h3>
+              <div class="image-display-container">
+                <div class="image-wrapper">
+                  <img src="{{ url_for('static', filename='uploads/' + image_file) }}" alt="Uploaded Image" class="large">
+                  <p class="image-caption">Your uploaded X-ray image</p>
+                </div>
+              </div>
+
+              <!-- Predict Button - EXACT SAME AS ORIGINAL -->
+              <form action="/predict" method="POST" class="center" id="predictForm">
+                <input type="hidden" name="image_file" value="{{ image_file }}">
+                <div class="result-actions">
+                  <button type="submit" class="btn">Predict</button>
+                </div>
+              </form>
+            </div>
+          {% endif %}
+
+          <!-- Display Prediction Result - EXACT SAME AS ORIGINAL -->
+          {% if result %}
+          <div class="result-card">
+            <h3>Prediction Result</h3>
+            <table class="result-table">
+                <tr>
+                    <th>TB Detected</th>
+                    <td class="{{ 'yes' if result == 'YES' else 'NO' }}">
+                        <strong>{{ result }}</strong>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Confidence Score</th>
+                    <td><strong>{{ accuracy }}%</strong></td>
+                </tr>
+            </table>
+
+            <!-- Show Generate Heatmap Button - EXACT SAME AS ORIGINAL -->
+            {% if result == "YES" %}
+                <form action="/generate_heatmap" method="POST" class="center" id="heatmapForm">
+                    <input type="hidden" name="image_file" value="{{ image_file }}">
+                    <div class="result-actions">
+                      <button type="submit" class="btn">Detect Area</button>
+                    </div>
+                </form>
+            {% endif %}
+          </div>
+          {% endif %}
+
+          <!-- Display Heatmap - UPDATED FOR BETTER ALIGNMENT -->
+          {% if heatmap_url %}
+          <div class="result-card">
+            <h3>Detected Area</h3>
+            <div class="image-display-container">
+              <div class="image-wrapper">
+                <img src="{{ heatmap_url }}" alt="Heatmap" class="large">
+                <p class="image-caption">AI-detected areas of concern</p>
+              </div>
+            </div>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </section>
+
+    <script>
+      // Mobile menu toggle
+      document.querySelector('.mobile-menu-btn').addEventListener('click', function() {
+        document.querySelector('.nav-links').classList.toggle('active');
+        this.querySelector('i').classList.toggle('fa-bars');
+        this.querySelector('i').classList.toggle('fa-times');
+      });
+
+      // Header scroll effect
+      window.addEventListener('scroll', function() {
+        const header = document.querySelector('.header');
+        if (window.scrollY > 100) {
+          header.classList.add('scrolled');
+        } else {
+          header.classList.remove('scrolled');
+        }
+      });
+
+      // File upload UI enhancements only
+      const uploadArea = document.getElementById('uploadArea');
+      const fileInput = document.getElementById('fileInput');
+      const fileInfo = document.getElementById('fileInfo');
+      const fileName = document.getElementById('fileName');
+      const fileSize = document.getElementById('fileSize');
+      const resetBtn = document.getElementById('resetBtn');
+      const loadingSpinner = document.getElementById('loadingSpinner');
+      const predictForm = document.getElementById('predictForm');
+      const heatmapForm = document.getElementById('heatmapForm');
+
+      // Click on upload area to trigger file input
+      uploadArea.addEventListener('click', () => {
+        fileInput.click();
+      });
+
+      // Handle file selection - UI ONLY
+      fileInput.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (file) {
+          // Display file info
+          fileName.textContent = file.name;
+          fileSize.textContent = formatFileSize(file.size);
+          fileInfo.classList.add('active');
+          uploadArea.classList.add('active');
+        }
+      });
+
+      // Reset form - UI ONLY
+      resetBtn.addEventListener('click', () => {
+        fileInfo.classList.remove('active');
+        uploadArea.classList.remove('active');
+        fileInput.value = '';
+      });
+
+      // Drag and drop functionality - UI ONLY
+      uploadArea.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        uploadArea.classList.add('active');
+      });
+
+      uploadArea.addEventListener('dragleave', () => {
+        uploadArea.classList.remove('active');
+      });
+
+      uploadArea.addEventListener('drop', (e) => {
+        e.preventDefault();
+        uploadArea.classList.remove('active');
+        
+        const file = e.dataTransfer.files[0];
+        if (file) {
+          fileInput.files = e.dataTransfer.files;
+          const event = new Event('change', { bubbles: true });
+          fileInput.dispatchEvent(event);
+        }
+      });
+
+      // NEW: Show loading spinner when forms are submitted
+      if (predictForm) {
+        predictForm.addEventListener('submit', () => {
+          loadingSpinner.style.display = 'block';
+        });
+      }
+
+      if (heatmapForm) {
+        heatmapForm.addEventListener('submit', () => {
+          loadingSpinner.style.display = 'block';
+        });
+      }
+
+      // Utility function for file size formatting
+      function formatFileSize(bytes) {
+        if (bytes === 0) return '0 Bytes';
+        const k = 1024;
+        const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+      }
+    </script>
+  </body>
+</html>

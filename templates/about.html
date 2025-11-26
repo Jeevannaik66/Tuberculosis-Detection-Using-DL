@@ -1,0 +1,1501 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>About Us - TB Detect</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" />
+    <style>
+      /* Reset and Base Styles */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      :root {
+        --primary-color: #3747bd;
+        --primary-dark: #2d3aa3;
+        --secondary-color: #002359;
+        --accent-color: #fe3448;
+        --success-color: #10b981;
+        --warning-color: #f59e0b;
+        --text-light: #ffffff;
+        --text-dark: #333333;
+        --text-gray: #666666;
+        --background-light: #f7f7f7;
+        --border-color: #e7e7e7;
+        --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        --gradient: linear-gradient(135deg, #3747bd 0%, #002359 100%);
+      }
+
+      body {
+        font-family: 'Poppins', sans-serif;
+        line-height: 1.6;
+        color: var(--text-dark);
+        overflow-x: hidden;
+        background: #ffffff;
+      }
+
+      a {
+        text-decoration: none;
+        color: inherit;
+        transition: all 0.3s ease;
+      }
+
+      /* Utility Classes */
+      .container {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      .section {
+        padding: 100px 0;
+      }
+
+      .section-title {
+        font-size: 3rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        color: var(--secondary-color);
+        text-align: center;
+        position: relative;
+      }
+
+      .section-title::after {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80px;
+        height: 4px;
+        background: var(--primary-color);
+        border-radius: 2px;
+      }
+
+      .section-subtitle {
+        font-size: 1.2rem;
+        color: var(--text-gray);
+        max-width: 600px;
+        margin: 2rem auto 3rem;
+        text-align: center;
+        line-height: 1.6;
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 15px 30px;
+        background: var(--primary-color);
+        color: white;
+        border-radius: 50px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        border: none;
+        cursor: pointer;
+        font-family: 'Poppins', sans-serif;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+        transition: left 0.5s;
+      }
+
+      .btn:hover::before {
+        left: 100%;
+      }
+
+      .btn:hover {
+        background: var(--primary-dark);
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px rgba(55, 71, 189, 0.3);
+      }
+
+      .btn-secondary {
+        background: transparent;
+        border: 2px solid var(--primary-color);
+        color: var(--primary-color);
+      }
+
+      .btn-secondary:hover {
+        background: var(--primary-color);
+        color: white;
+      }
+
+      /* Animations */
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes pulse {
+        0% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.05);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+
+      @keyframes float {
+        0%, 100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-10px);
+        }
+      }
+
+      .animate-fade-in {
+        animation: fadeInUp 0.8s ease-out;
+      }
+
+      .animate-pulse {
+        animation: pulse 2s infinite;
+        animation-delay: 1s;
+      }
+
+      .animate-float {
+        animation: float 3s ease-in-out infinite;
+      }
+
+      /* Header & Navigation */
+      .header {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        position: fixed;
+        width: 100%;
+        top: 0;
+        z-index: 1000;
+        transition: all 0.3s ease;
+      }
+
+      .header.scrolled {
+        padding: 10px 0;
+        background: rgba(255, 255, 255, 0.98);
+      }
+
+      .nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1.5rem 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: var(--secondary-color);
+      }
+
+      .logo i {
+        color: var(--primary-color);
+        font-size: 2rem;
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 2.5rem;
+        list-style: none;
+        align-items: center;
+      }
+
+      .nav-links a {
+        font-family: 'Poppins', sans-serif;
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--secondary-color);
+        text-transform: uppercase;
+        position: relative;
+        padding: 5px 0;
+      }
+
+      .nav-links a::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: var(--primary-color);
+        transition: width 0.3s ease;
+      }
+
+      .nav-links a:hover::after,
+      .nav-links a.active::after {
+        width: 100%;
+      }
+
+      .nav-links a:hover,
+      .nav-links a.active {
+        color: var(--primary-color);
+      }
+
+      .mobile-menu-btn {
+        display: none;
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        color: var(--secondary-color);
+        cursor: pointer;
+        transition: transform 0.3s ease;
+      }
+
+      .mobile-menu-btn:hover {
+        transform: scale(1.1);
+      }
+
+      /* Hero Section */
+      .hero {
+        background: var(--gradient);
+        color: white;
+        padding: 180px 0 120px;
+        margin-top: 80px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80') no-repeat center;
+        background-size: cover;
+        opacity: 0.1;
+      }
+
+      .hero-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+        text-align: center;
+        position: relative;
+        z-index: 2;
+      }
+
+      .hero-title {
+        font-size: 4rem;
+        font-weight: 800;
+        line-height: 1.1;
+        margin-bottom: 1.5rem;
+        text-transform: uppercase;
+        background: linear-gradient(45deg, #ffffff, #e0e7ff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: fadeInUp 1s ease-out;
+      }
+
+      .hero-subtitle {
+        font-size: 1.3rem;
+        margin-bottom: 2.5rem;
+        opacity: 0.9;
+        font-family: 'Open Sans', sans-serif;
+        max-width: 800px;
+        margin-left: auto;
+        margin-right: auto;
+        animation: fadeInUp 1s ease-out 0.2s both;
+      }
+
+      .breadcrumb {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        margin-top: 2rem;
+        animation: fadeInUp 1s ease-out 0.6s both;
+      }
+
+      .breadcrumb a {
+        color: rgba(255, 255, 255, 0.8);
+        transition: color 0.3s ease;
+      }
+
+      .breadcrumb a:hover {
+        color: white;
+      }
+
+      .breadcrumb span {
+        color: white;
+        font-weight: 600;
+      }
+
+      .breadcrumb i {
+        font-size: 0.8rem;
+        color: rgba(255, 255, 255, 0.6);
+      }
+
+      /* Mission Section */
+      .mission-section {
+        background: white;
+        padding: 100px 0;
+        position: relative;
+      }
+
+      .mission-content {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+        gap: 4rem;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+        align-items: center;
+      }
+
+      .mission-image {
+        background: url('https://images.unsplash.com/photo-1559757175-0eb30cd8c063?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80') no-repeat center;
+        background-size: cover;
+        border-radius: 20px;
+        height: 500px;
+        box-shadow: var(--shadow);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .mission-image::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: var(--gradient);
+        opacity: 0.2;
+        border-radius: 20px;
+      }
+
+      .mission-text {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+      }
+
+      .mission-card {
+        background: white;
+        border-radius: 20px;
+        box-shadow: var(--shadow);
+        padding: 2.5rem;
+        transition: all 0.3s ease;
+        border-left: 5px solid var(--primary-color);
+      }
+
+      .mission-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+      }
+
+      .mission-title {
+        color: var(--secondary-color);
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .mission-title i {
+        color: var(--primary-color);
+        font-size: 1.8rem;
+      }
+
+      .mission-desc {
+        color: var(--text-gray);
+        font-family: 'Open Sans', sans-serif;
+        font-size: 1rem;
+        line-height: 1.6;
+      }
+
+      /* Team Section */
+      .team-section {
+        background: var(--background-light);
+        padding: 100px 0;
+        position: relative;
+      }
+
+      .team-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 100px;
+        background: linear-gradient(to bottom, var(--primary-color), transparent);
+        opacity: 0.1;
+      }
+
+      .team-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2.5rem;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      .team-card {
+        background: white;
+        padding: 3rem 2rem;
+        border-radius: 20px;
+        box-shadow: var(--shadow);
+        text-align: center;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .team-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 5px;
+        background: var(--gradient);
+      }
+
+      .team-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+      }
+
+      .team-avatar {
+        width: 150px;
+        height: 150px;
+        margin: 0 auto 1.5rem;
+        border-radius: 50%;
+        background: var(--gradient);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 3.5rem;
+        color: white;
+        animation: float 3s ease-in-out infinite;
+      }
+
+      .team-name {
+        font-size: 1.3rem;
+        font-weight: 600;
+        color: var(--secondary-color);
+        margin-bottom: 0.5rem;
+      }
+
+      .team-role {
+        color: var(--primary-color);
+        font-weight: 500;
+        margin-bottom: 1rem;
+        text-transform: uppercase;
+        font-size: 0.9rem;
+      }
+
+      .team-desc {
+        color: var(--text-gray);
+        font-family: 'Open Sans', sans-serif;
+        font-size: 0.95rem;
+        line-height: 1.6;
+      }
+
+      /* Values Section */
+      .values-section {
+        background: white;
+        padding: 100px 0;
+        position: relative;
+      }
+
+      .values-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2.5rem;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      .value-card {
+        background: white;
+        border-radius: 20px;
+        box-shadow: var(--shadow);
+        padding: 3rem 2rem;
+        text-align: center;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .value-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+      }
+
+      .value-icon {
+        width: 100px;
+        height: 100px;
+        margin: 0 auto 1.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--gradient);
+        border-radius: 50%;
+        font-size: 2.5rem;
+        color: white;
+        transition: all 0.3s ease;
+      }
+
+      .value-card:hover .value-icon {
+        transform: scale(1.1);
+        background: var(--primary-color);
+      }
+
+      .value-title {
+        font-size: 1.3rem;
+        font-weight: 600;
+        color: var(--secondary-color);
+        margin-bottom: 1rem;
+        text-transform: uppercase;
+      }
+
+      .value-desc {
+        color: var(--text-gray);
+        font-family: 'Open Sans', sans-serif;
+        font-size: 0.95rem;
+        line-height: 1.6;
+      }
+
+      /* Stats Section */
+      .stats-section {
+        background: var(--gradient);
+        padding: 100px 0;
+        color: white;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .stats-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('https://images.unsplash.com/photo-1579684385127-1ef15d508118?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80') no-repeat center;
+        background-size: cover;
+        opacity: 0.1;
+      }
+
+      .stats-section .section-title {
+        color: white;
+      }
+
+      .stats-section .section-title::after {
+        background: white;
+      }
+
+      .stats-section .section-subtitle {
+        color: rgba(255, 255, 255, 0.9);
+      }
+
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 2.5rem;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+        position: relative;
+        z-index: 2;
+      }
+
+      .stat-card {
+        background: rgba(255, 255, 255, 0.1);
+        padding: 3rem 2rem;
+        border-radius: 20px;
+        text-align: center;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        transition: all 0.3s ease;
+      }
+
+      .stat-card:hover {
+        background: rgba(255, 255, 255, 0.2);
+        transform: translateY(-5px);
+      }
+
+      .stat-number {
+        font-size: 3rem;
+        font-weight: 800;
+        margin-bottom: 0.5rem;
+        font-family: 'Open Sans', sans-serif;
+        background: white;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .stat-title {
+        font-size: 1.3rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        text-transform: uppercase;
+      }
+
+      .stat-desc {
+        color: rgba(255, 255, 255, 0.9);
+        font-family: 'Open Sans', sans-serif;
+        font-size: 0.95rem;
+        line-height: 1.6;
+      }
+
+      /* FAQ Section */
+      .faq-section {
+        background: var(--background-light);
+        padding: 100px 0;
+        position: relative;
+      }
+
+      .faq-content {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+        gap: 4rem;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+        align-items: start;
+      }
+
+      .faq-image {
+        background: url('https://images.unsplash.com/photo-1559757148-5c350d0d3c56?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80') no-repeat center;
+        background-size: cover;
+        border-radius: 20px;
+        height: 500px;
+        box-shadow: var(--shadow);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .faq-image::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: var(--gradient);
+        opacity: 0.8;
+        border-radius: 20px;
+      }
+
+      .faq-items {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+      }
+
+      .faq-categories {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 2rem;
+        flex-wrap: wrap;
+      }
+
+      .faq-category {
+        padding: 12px 24px;
+        background: white;
+        border: 2px solid var(--border-color);
+        border-radius: 50px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .faq-category:hover {
+        border-color: var(--primary-color);
+        color: var(--primary-color);
+      }
+
+      .faq-category.active {
+        background: var(--primary-color);
+        border-color: var(--primary-color);
+        color: white;
+      }
+
+      .faq-item {
+        background: white;
+        border-radius: 15px;
+        box-shadow: var(--shadow);
+        padding: 1.5rem;
+        transition: all 0.3s ease;
+        border: 2px solid transparent;
+      }
+
+      .faq-item:hover {
+        border-color: var(--primary-color);
+        transform: translateY(-2px);
+      }
+
+      .faq-question {
+        color: var(--text-dark);
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        cursor: pointer;
+      }
+
+      .faq-question i {
+        color: var(--primary-color);
+        transition: transform 0.3s ease;
+      }
+
+      .faq-item.active .faq-question i {
+        transform: rotate(180deg);
+      }
+
+      .faq-answer {
+        color: var(--text-gray);
+        font-family: 'Open Sans', sans-serif;
+        font-size: 0.95rem;
+        line-height: 1.6;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+      }
+
+      .faq-item.active .faq-answer {
+        max-height: 200px;
+        margin-top: 1rem;
+      }
+
+      /* Footer */
+      .footer {
+        background: var(--secondary-color);
+        color: white;
+        padding: 80px 0 30px;
+        position: relative;
+      }
+
+      .footer::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 100px;
+        background: linear-gradient(to bottom, var(--primary-color), transparent);
+        opacity: 0.1;
+      }
+
+      .footer-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+        position: relative;
+        z-index: 2;
+      }
+
+      .footer-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 3rem;
+        margin-bottom: 3rem;
+      }
+
+      .footer-brand {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+      }
+
+      .footer-logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: white;
+      }
+
+      .footer-logo i {
+        color: var(--primary-color);
+        font-size: 2rem;
+      }
+
+      .footer-description {
+        color: rgba(255, 255, 255, 0.8);
+        font-family: 'Open Sans', sans-serif;
+        font-size: 0.95rem;
+        line-height: 1.6;
+        max-width: 350px;
+      }
+
+      .footer-column h3 {
+        font-size: 1.2rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        margin-bottom: 1.5rem;
+        color: white;
+      }
+
+      .footer-links {
+        list-style: none;
+      }
+
+      .footer-links li {
+        margin-bottom: 0.75rem;
+      }
+
+      .footer-links a {
+        color: rgba(255, 255, 255, 0.8);
+        font-family: 'Poppins', sans-serif;
+        font-size: 0.95rem;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .footer-links a:hover {
+        color: white;
+        transform: translateX(5px);
+      }
+
+      .social-links {
+        display: flex;
+        gap: 1rem;
+        margin-top: 1.5rem;
+      }
+
+      .social-link {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        background: rgba(255, 255, 255, 0.1);
+        border: 2px solid transparent;
+      }
+
+      .social-link:hover {
+        transform: translateY(-3px);
+        background: var(--primary-color);
+        border-color: var(--primary-color);
+      }
+
+      .footer-bottom {
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        padding-top: 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+
+      .copyright {
+        color: rgba(255, 255, 255, 0.8);
+        font-family: 'Open Sans', sans-serif;
+        font-size: 0.9rem;
+      }
+
+      .footer-bottom-links {
+        display: flex;
+        gap: 2rem;
+      }
+
+      .footer-bottom-links a {
+        color: rgba(255, 255, 255, 0.8);
+        font-family: 'Poppins', sans-serif;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        transition: color 0.3s ease;
+      }
+
+      .footer-bottom-links a:hover {
+        color: white;
+      }
+
+      /* Responsive Design */
+      @media (max-width: 1024px) {
+        .hero-title {
+          font-size: 3rem;
+        }
+        
+        .section-title {
+          font-size: 2.5rem;
+        }
+        
+        .mission-content,
+        .faq-content {
+          grid-template-columns: 1fr;
+        }
+        
+        .mission-image,
+        .faq-image {
+          height: 400px;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .nav {
+          padding: 1rem;
+          flex-wrap: wrap;
+        }
+
+        .nav-links {
+          display: none;
+          width: 100%;
+          flex-direction: column;
+          gap: 1rem;
+          margin-top: 1rem;
+          background: white;
+          padding: 1rem;
+          border-radius: 10px;
+          box-shadow: var(--shadow);
+        }
+
+        .nav-links.active {
+          display: flex;
+        }
+
+        .mobile-menu-btn {
+          display: block;
+        }
+
+        .hero {
+          padding: 140px 0 80px;
+          margin-top: 60px;
+        }
+
+        .hero-title {
+          font-size: 2.5rem;
+        }
+
+        .section {
+          padding: 80px 0;
+        }
+
+        .section-title {
+          font-size: 2rem;
+        }
+
+        .team-grid,
+        .values-grid,
+        .stats-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .footer-grid {
+          grid-template-columns: 1fr;
+          text-align: center;
+        }
+
+        .footer-bottom {
+          flex-direction: column;
+          text-align: center;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .hero-title {
+          font-size: 2rem;
+        }
+
+        .section-title {
+          font-size: 1.8rem;
+        }
+
+        .mission-content,
+        .faq-content {
+          grid-template-columns: 1fr;
+        }
+
+        .faq-categories {
+          justify-content: center;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Header -->
+    <header class="header">
+      <nav class="nav">
+        <div class="logo">
+          <i class="fas fa-lungs-virus"></i>
+          <span>TB Detect</span>
+        </div>
+        <button class="mobile-menu-btn">
+          <i class="fas fa-bars"></i>
+        </button>
+        <ul class="nav-links">
+          <li><a href="{{ url_for('home') }}">Home</a></li>
+          <li><a href="{{ url_for('upload') }}">Upload</a></li>
+          <li><a href="{{ url_for('prevention') }}">Prevention</a></li>
+          <li><a href="{{ url_for('about_us') }}" class="active">About Us</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="hero-content">
+        <h1 class="hero-title">About TB Detect</h1>
+        <p class="hero-subtitle">
+          Pioneering AI-powered tuberculosis detection to create a healthier world. 
+          Learn about our mission, team, and commitment to fighting TB.
+        </p>
+        
+        <div class="breadcrumb">
+          <a href="{{ url_for('home') }}">Home</a>
+          <i class="fas fa-chevron-right"></i>
+          <span>About Us</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Mission Section -->
+    <section class="mission-section">
+      <div class="container">
+        <h2 class="section-title">Our Mission & Vision</h2>
+        <p class="section-subtitle">
+          Dedicated to pioneering innovative technologies for accurate tuberculosis diagnosis and prevention
+        </p>
+        
+        <div class="mission-content">
+          <div class="mission-image" data-aos="fade-right"></div>
+          <div class="mission-text" data-aos="fade-left">
+            <div class="mission-card">
+              <h3 class="mission-title">
+                <i class="fas fa-bullseye"></i>
+                Our Mission
+              </h3>
+              <p class="mission-desc">
+                To revolutionize tuberculosis detection through advanced AI technology, making accurate diagnosis accessible to everyone worldwide. We strive to reduce TB mortality rates by enabling early detection and timely intervention.
+              </p>
+            </div>
+            
+            <div class="mission-card">
+              <h3 class="mission-title">
+                <i class="fas fa-eye"></i>
+                Our Vision
+              </h3>
+              <p class="mission-desc">
+                A world free from tuberculosis, where advanced technology and compassionate care work together to eliminate this preventable disease. We envision a future where no one suffers from undiagnosed or late-diagnosed TB.
+              </p>
+            </div>
+            
+            <div class="mission-card">
+              <h3 class="mission-title">
+                <i class="fas fa-handshake"></i>
+                Our Commitment
+              </h3>
+              <p class="mission-desc">
+                We are committed to continuous innovation, ethical AI development, and global health equity. Our team works tirelessly to improve detection accuracy and make our technology available to underserved communities.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Team Section -->
+    <section class="team-section">
+      <div class="container">
+        <h2 class="section-title">Meet Our Team</h2>
+        <p class="section-subtitle">
+          Passionate professionals dedicated to fighting tuberculosis through innovation and technology
+        </p>
+        
+        <div class="team-grid">
+          <div class="team-card" data-aos="fade-up" data-aos-delay="100">
+            <div class="team-avatar">
+              <i class="fas fa-user-md"></i>
+            </div>
+            <h3 class="team-name">Dr. Sarah Chen</h3>
+            <div class="team-role">Chief Medical Officer</div>
+            <p class="team-desc">
+              Board-certified pulmonologist with 15+ years experience in TB diagnosis and treatment. Leads our medical research and clinical validation efforts.
+            </p>
+          </div>
+          
+          <div class="team-card" data-aos="fade-up" data-aos-delay="200">
+            <div class="team-avatar">
+              <i class="fas fa-robot"></i>
+            </div>
+            <h3 class="team-name">Dr. Michael Rodriguez</h3>
+            <div class="team-role">AI Research Director</div>
+            <p class="team-desc">
+              PhD in Machine Learning with expertise in medical imaging analysis. Develops and optimizes our deep learning algorithms for TB detection.
+            </p>
+          </div>
+          
+          <div class="team-card" data-aos="fade-up" data-aos-delay="300">
+            <div class="team-avatar">
+              <i class="fas fa-laptop-code"></i>
+            </div>
+            <h3 class="team-name">Emily Johnson</h3>
+            <div class="team-role">Lead Software Engineer</div>
+            <p class="team-desc">
+              Full-stack developer specializing in healthcare applications. Ensures our platform is secure, scalable, and user-friendly for global deployment.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Values Section -->
+    <section class="values-section">
+      <div class="container">
+        <h2 class="section-title">Our Values</h2>
+        <p class="section-subtitle">
+          The principles that guide our work and define our approach to tuberculosis detection
+        </p>
+        
+        <div class="values-grid">
+          <div class="value-card" data-aos="fade-up" data-aos-delay="100">
+            <div class="value-icon">
+              <i class="fas fa-heart"></i>
+            </div>
+            <h3 class="value-title">Compassion</h3>
+            <p class="value-desc">
+              We approach every case with empathy and understanding, recognizing the human impact behind each diagnosis and the importance of timely, accurate results.
+            </p>
+          </div>
+          
+          <div class="value-card" data-aos="fade-up" data-aos-delay="200">
+            <div class="value-icon">
+              <i class="fas fa-flask"></i>
+            </div>
+            <h3 class="value-title">Innovation</h3>
+            <p class="value-desc">
+              We continuously push the boundaries of AI technology to improve detection accuracy, speed, and accessibility for tuberculosis diagnosis worldwide.
+            </p>
+          </div>
+          
+          <div class="value-card" data-aos="fade-up" data-aos-delay="300">
+            <div class="value-icon">
+              <i class="fas fa-globe"></i>
+            </div>
+            <h3 class="value-title">Global Impact</h3>
+            <p class="value-desc">
+              We're committed to making our technology accessible to all communities, especially in regions with high TB burden and limited healthcare resources.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats-section">
+      <div class="container">
+        <h2 class="section-title">Our Impact</h2>
+        <p class="section-subtitle">
+          Making a difference in the global fight against tuberculosis through technology and innovation
+        </p>
+        
+        <div class="stats-grid">
+          <div class="stat-card" data-aos="fade-up" data-aos-delay="100">
+            <div class="stat-number">50K+</div>
+            <h3 class="stat-title">Scans Analyzed</h3>
+            <p class="stat-desc">
+              Our AI has processed over 50,000 chest X-rays, helping detect tuberculosis in its early stages across multiple countries.
+            </p>
+          </div>
+          
+          <div class="stat-card" data-aos="fade-up" data-aos-delay="200">
+            <div class="stat-number">95%</div>
+            <h3 class="stat-title">Detection Accuracy</h3>
+            <p class="stat-desc">
+              Our deep learning model achieves 95% accuracy in identifying tuberculosis patterns, validated by medical professionals.
+            </p>
+          </div>
+          
+          <div class="stat-card" data-aos="fade-up" data-aos-delay="300">
+            <div class="stat-number">15+</div>
+            <h3 class="stat-title">Countries Served</h3>
+            <p class="stat-desc">
+              We're actively working with healthcare providers in over 15 countries to improve TB detection and patient outcomes.
+            </p>
+          </div>
+          
+          <div class="stat-card" data-aos="fade-up" data-aos-delay="400">
+            <div class="stat-number">24/7</div>
+            <h3 class="stat-title">Availability</h3>
+            <p class="stat-desc">
+              Our platform operates round-the-clock, ensuring healthcare providers can access TB detection capabilities whenever needed.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq-section">
+      <div class="container">
+        <h2 class="section-title">Frequently Asked Questions</h2>
+        <p class="section-subtitle">
+          Get answers to common questions about our organization and technology
+        </p>
+        
+        <div class="faq-content">
+          <div class="faq-image" data-aos="fade-right"></div>
+          <div class="faq-items" data-aos="fade-left">
+            <div class="faq-categories">
+              <div class="faq-category active">General</div>
+              <div class="faq-category">Technology</div>
+              <div class="faq-category">Partnerships</div>
+              <div class="faq-category">Support</div>
+            </div>
+            
+            <div class="faq-item active">
+              <div class="faq-question">
+                How accurate is your AI in detecting tuberculosis?
+                <i class="fas fa-chevron-down"></i>
+              </div>
+              <div class="faq-answer">
+                Our deep learning model achieves over 95% accuracy in detecting tuberculosis patterns from chest X-rays. It's trained on thousands of validated medical images and continuously improves through machine learning and clinical feedback.
+              </div>
+            </div>
+            
+            <div class="faq-item">
+              <div class="faq-question">
+                Is TB Detect available for healthcare organizations?
+                <i class="fas fa-chevron-down"></i>
+              </div>
+              <div class="faq-answer">
+                Yes, we partner with hospitals, clinics, and healthcare organizations worldwide. Our technology integrates with existing systems and can be customized to meet specific workflow requirements.
+              </div>
+            </div>
+            
+            <div class="faq-item">
+              <div class="faq-question">
+                How do you ensure patient data privacy and security?
+                <i class="fas fa-chevron-down"></i>
+              </div>
+              <div class="faq-answer">
+                We adhere to strict data protection regulations including HIPAA and GDPR. All medical images are anonymized, encrypted, and processed securely. We never share patient data without explicit consent.
+              </div>
+            </div>
+            
+            <div class="faq-item">
+              <div class="faq-question">
+                Can your technology work in low-resource settings?
+                <i class="fas fa-chevron-down"></i>
+              </div>
+              <div class="faq-answer">
+                Absolutely. Our platform is designed to work with basic internet connectivity and can process images from standard X-ray machines. We're committed to making TB detection accessible in all healthcare environments.
+              </div>
+            </div>
+            
+            <div class="faq-item">
+              <div class="faq-question">
+                How can I get involved with TB Detect?
+                <i class="fas fa-chevron-down"></i>
+              </div>
+              <div class="faq-answer">
+                We welcome partnerships with researchers, healthcare providers, and organizations working in TB prevention. Contact us through our website to discuss collaboration opportunities or career openings.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="footer-content">
+        <div class="footer-grid">
+          <div class="footer-brand">
+            <div class="footer-logo">
+              <i class="fas fa-lungs-virus"></i>
+              <span>TB Detect</span>
+            </div>
+            <p class="footer-description">
+              Pioneering AI-powered tuberculosis detection to create a world free from TB. Advanced technology, compassionate care, global impact.
+            </p>
+            <div class="social-links">
+              <a href="#" class="social-link">
+                <i class="fab fa-facebook-f"></i>
+              </a>
+              <a href="#" class="social-link">
+                <i class="fab fa-twitter"></i>
+              </a>
+              <a href="#" class="social-link">
+                <i class="fab fa-linkedin-in"></i>
+              </a>
+              <a href="#" class="social-link">
+                <i class="fab fa-instagram"></i>
+              </a>
+            </div>
+          </div>
+          
+          <div class="footer-column">
+            <h3>Quick Links</h3>
+            <ul class="footer-links">
+              <li><a href="{{ url_for('home') }}"><i class="fas fa-home"></i> Home</a></li>
+              <li><a href="{{ url_for('upload') }}"><i class="fas fa-upload"></i> Upload X-Ray</a></li>
+              <li><a href="{{ url_for('prevention') }}"><i class="fas fa-shield-alt"></i> Prevention</a></li>
+              <li><a href="{{ url_for('about_us') }}"><i class="fas fa-info-circle"></i> About Us</a></li>
+            </ul>
+          </div>
+          
+          <div class="footer-column">
+            <h3>Resources</h3>
+            <ul class="footer-links">
+              <li><a href="#"><i class="fas fa-globe"></i> WHO Guidelines</a></li>
+              <li><a href="#"><i class="fas fa-book-medical"></i> Research Papers</a></li>
+              <li><a href="#"><i class="fas fa-chart-line"></i> Statistics</a></li>
+              <li><a href="#"><i class="fas fa-download"></i> Mobile App</a></li>
+            </ul>
+          </div>
+          
+          <div class="footer-column">
+            <h3>Support</h3>
+            <ul class="footer-links">
+              <li><a href="#"><i class="fas fa-question-circle"></i> Help Center</a></li>
+              <li><a href="#"><i class="fas fa-phone-alt"></i> Contact Us</a></li>
+              <li><a href="#"><i class="fas fa-bug"></i> Report Issue</a></li>
+              <li><a href="#"><i class="fas fa-comments"></i> Feedback</a></li>
+            </ul>
+          </div>
+        </div>
+        
+        <div class="footer-bottom">
+          <div class="copyright">© 2024 TB Detect. All rights reserved. Fighting TB with innovation and compassion.</div>
+          <div class="footer-bottom-links">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+            <a href="#">Cookie Policy</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script>
+      // Initialize AOS animations
+      AOS.init({
+        duration: 1000,
+        once: true,
+        offset: 100
+      });
+
+      // Mobile menu toggle
+      document.querySelector('.mobile-menu-btn').addEventListener('click', function() {
+        document.querySelector('.nav-links').classList.toggle('active');
+        this.querySelector('i').classList.toggle('fa-bars');
+        this.querySelector('i').classList.toggle('fa-times');
+      });
+
+      // Header scroll effect
+      window.addEventListener('scroll', function() {
+        const header = document.querySelector('.header');
+        if (window.scrollY > 100) {
+          header.classList.add('scrolled');
+        } else {
+          header.classList.remove('scrolled');
+        }
+      });
+
+      // FAQ accordion functionality
+      document.querySelectorAll('.faq-question').forEach(question => {
+        question.addEventListener('click', () => {
+          const item = question.parentElement;
+          const isActive = item.classList.contains('active');
+          
+          // Close all items
+          document.querySelectorAll('.faq-item').forEach(faqItem => {
+            faqItem.classList.remove('active');
+          });
+          
+          // Open clicked item if it wasn't active
+          if (!isActive) {
+            item.classList.add('active');
+          }
+        });
+      });
+
+      // FAQ category switching
+      document.querySelectorAll('.faq-category').forEach(category => {
+        category.addEventListener('click', () => {
+          document.querySelectorAll('.faq-category').forEach(cat => cat.classList.remove('active'));
+          category.classList.add('active');
+        });
+      });
+
+      // Smooth scrolling for anchor links
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+          e.preventDefault();
+          const target = document.querySelector(this.getAttribute('href'));
+          if (target) {
+            target.scrollIntoView({
+              behavior: 'smooth',
+              block: 'start'
+            });
+          }
+        });
+      });
+
+      // Add loading animation to cards on scroll
+      const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+      };
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = '1';
+            entry.target.style.transform = 'translateY(0)';
+          }
+        });
+      }, observerOptions);
+
+      // Observe all cards for animation
+      document.querySelectorAll('.team-card, .value-card, .stat-card, .mission-card').forEach(card => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(30px)';
+        card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        observer.observe(card);
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,1832 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TB Prevention - Advanced Tuberculosis Prevention Guide</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" />
+    <style>
+      /* Reset and Base Styles */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      :root {
+        --primary-color: #3747bd;
+        --primary-dark: #2d3aa3;
+        --secondary-color: #002359;
+        --accent-color: #fe3448;
+        --success-color: #10b981;
+        --warning-color: #f59e0b;
+        --text-light: #ffffff;
+        --text-dark: #333333;
+        --text-gray: #666666;
+        --background-light: #f7f7f7;
+        --border-color: #e7e7e7;
+        --shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        --gradient: linear-gradient(135deg, #3747bd 0%, #002359 100%);
+      }
+
+      body {
+        font-family: 'Poppins', sans-serif;
+        line-height: 1.6;
+        color: var(--text-dark);
+        overflow-x: hidden;
+        background: #ffffff;
+      }
+
+      a {
+        text-decoration: none;
+        color: inherit;
+        transition: all 0.3s ease;
+      }
+
+      /* Utility Classes */
+      .container {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      .section {
+        padding: 100px 0;
+      }
+
+      .section-title {
+        font-size: 3rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        color: var(--secondary-color);
+        text-align: center;
+        position: relative;
+      }
+
+      .section-title::after {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80px;
+        height: 4px;
+        background: var(--primary-color);
+        border-radius: 2px;
+      }
+
+      .section-subtitle {
+        font-size: 1.2rem;
+        color: var(--text-gray);
+        max-width: 600px;
+        margin: 2rem auto 3rem;
+        text-align: center;
+        line-height: 1.6;
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 15px 30px;
+        background: var(--primary-color);
+        color: white;
+        border-radius: 50px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        border: none;
+        cursor: pointer;
+        font-family: 'Poppins', sans-serif;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+        transition: left 0.5s;
+      }
+
+      .btn:hover::before {
+        left: 100%;
+      }
+
+      .btn:hover {
+        background: var(--primary-dark);
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px rgba(55, 71, 189, 0.3);
+      }
+
+      .btn-secondary {
+        background: transparent;
+        border: 2px solid var(--primary-color);
+        color: var(--primary-color);
+      }
+
+      .btn-secondary:hover {
+        background: var(--primary-color);
+        color: white;
+      }
+
+      /* Animations */
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes pulse {
+        0% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.05);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+
+      @keyframes float {
+        0%, 100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-10px);
+        }
+      }
+
+      .animate-fade-in {
+        animation: fadeInUp 0.8s ease-out;
+      }
+
+      .animate-pulse {
+        animation: pulse 2s infinite;
+        animation-delay: 1s;
+      }
+
+      .animate-float {
+        animation: float 3s ease-in-out infinite;
+      }
+
+      /* Header & Navigation */
+      .header {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        position: fixed;
+        width: 100%;
+        top: 0;
+        z-index: 1000;
+        transition: all 0.3s ease;
+      }
+
+      .header.scrolled {
+        padding: 10px 0;
+        background: rgba(255, 255, 255, 0.98);
+      }
+
+      .nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1.5rem 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: var(--secondary-color);
+      }
+
+      .logo i {
+        color: var(--primary-color);
+        font-size: 2rem;
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 2.5rem;
+        list-style: none;
+        align-items: center;
+      }
+
+      .nav-links a {
+        font-family: 'Poppins', sans-serif;
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--secondary-color);
+        text-transform: uppercase;
+        position: relative;
+        padding: 5px 0;
+      }
+
+      .nav-links a::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: var(--primary-color);
+        transition: width 0.3s ease;
+      }
+
+      .nav-links a:hover::after,
+      .nav-links a.active::after {
+        width: 100%;
+      }
+
+      .nav-links a:hover,
+      .nav-links a.active {
+        color: var(--primary-color);
+      }
+
+      .mobile-menu-btn {
+        display: none;
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        color: var(--secondary-color);
+        cursor: pointer;
+        transition: transform 0.3s ease;
+      }
+
+      .mobile-menu-btn:hover {
+        transform: scale(1.1);
+      }
+
+      /* Hero Section */
+      .hero {
+        background: var(--gradient);
+        color: white;
+        padding: 180px 0 120px;
+        margin-top: 80px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80') no-repeat center;
+        background-size: cover;
+        opacity: 0.1;
+      }
+
+      .hero-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+        text-align: center;
+        position: relative;
+        z-index: 2;
+      }
+
+      .hero-title {
+        font-size: 4rem;
+        font-weight: 800;
+        line-height: 1.1;
+        margin-bottom: 1.5rem;
+        text-transform: uppercase;
+        background: linear-gradient(45deg, #ffffff, #e0e7ff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: fadeInUp 1s ease-out;
+      }
+
+      .hero-subtitle {
+        font-size: 1.3rem;
+        margin-bottom: 2.5rem;
+        opacity: 0.9;
+        font-family: 'Open Sans', sans-serif;
+        max-width: 800px;
+        margin-left: auto;
+        margin-right: auto;
+        animation: fadeInUp 1s ease-out 0.2s both;
+      }
+
+      .hero-buttons {
+        display: flex;
+        gap: 1.5rem;
+        justify-content: center;
+        margin-bottom: 3rem;
+        animation: fadeInUp 1s ease-out 0.4s both;
+      }
+
+      .breadcrumb {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        margin-top: 2rem;
+        animation: fadeInUp 1s ease-out 0.6s both;
+      }
+
+      .breadcrumb a {
+        color: rgba(255, 255, 255, 0.8);
+        transition: color 0.3s ease;
+      }
+
+      .breadcrumb a:hover {
+        color: white;
+      }
+
+      .breadcrumb span {
+        color: white;
+        font-weight: 600;
+      }
+
+      .breadcrumb i {
+        font-size: 0.8rem;
+        color: rgba(255, 255, 255, 0.6);
+      }
+
+      /* Prevention Steps Section */
+      .prevention-steps {
+        background: var(--background-light);
+        padding: 100px 0;
+        position: relative;
+      }
+
+      .prevention-steps::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 100px;
+        background: linear-gradient(to bottom, var(--primary-color), transparent);
+        opacity: 0.1;
+      }
+
+      .steps-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2.5rem;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      .step-card {
+        background: white;
+        padding: 3rem 2rem;
+        border-radius: 20px;
+        box-shadow: var(--shadow);
+        text-align: center;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .step-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 5px;
+        background: var(--gradient);
+      }
+
+      .step-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+      }
+
+      .step-icon {
+        width: 100px;
+        height: 100px;
+        margin: 0 auto 1.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--gradient);
+        border-radius: 50%;
+        font-size: 2.5rem;
+        color: white;
+        animation: float 3s ease-in-out infinite;
+      }
+
+      .step-number {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        width: 40px;
+        height: 40px;
+        background: var(--primary-color);
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 1.2rem;
+      }
+
+      .step-title {
+        font-size: 1.3rem;
+        font-weight: 600;
+        color: var(--secondary-color);
+        margin-bottom: 1rem;
+        text-transform: uppercase;
+      }
+
+      .step-desc {
+        color: var(--text-gray);
+        font-family: 'Open Sans', sans-serif;
+        font-size: 0.95rem;
+        line-height: 1.6;
+      }
+
+      /* Do's and Don'ts Section */
+      .dos-donts {
+        background: white;
+        padding: 100px 0;
+        position: relative;
+      }
+
+      .dos-donts-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+        gap: 3rem;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      .dos-card, .donts-card {
+        background: white;
+        border-radius: 20px;
+        box-shadow: var(--shadow);
+        overflow: hidden;
+        transition: all 0.3s ease;
+      }
+
+      .dos-card:hover, .donts-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+      }
+
+      .dos-header {
+        background: var(--gradient);
+        padding: 2.5rem;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .dos-header::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+        transform: rotate(45deg);
+        animation: shine 3s infinite;
+      }
+
+      @keyframes shine {
+        0% { transform: translateX(-100%) rotate(45deg); }
+        100% { transform: translateX(100%) rotate(45deg); }
+      }
+
+      .donts-header {
+        background: linear-gradient(135deg, var(--accent-color), #dc2626);
+        padding: 2.5rem;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .donts-header::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+        transform: rotate(45deg);
+        animation: shine 3s infinite;
+      }
+
+      .dos-title, .donts-title {
+        color: white;
+        font-size: 1.5rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        position: relative;
+        z-index: 2;
+      }
+
+      .dos-list, .donts-list {
+        padding: 2.5rem;
+      }
+
+      .dos-item, .donts-item {
+        display: flex;
+        gap: 1.5rem;
+        align-items: flex-start;
+        margin-bottom: 2.5rem;
+        padding: 1.5rem;
+        border-radius: 15px;
+        transition: all 0.3s ease;
+      }
+
+      .dos-item:hover, .donts-item:hover {
+        background: var(--background-light);
+        transform: translateX(10px);
+      }
+
+      .dos-item:last-child, .donts-item:last-child {
+        margin-bottom: 0;
+      }
+
+      .action-icon {
+        flex-shrink: 0;
+        width: 80px;
+        height: 80px;
+        background: white;
+        border-radius: 20px;
+        box-shadow: var(--shadow);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        color: var(--primary-color);
+        transition: all 0.3s ease;
+      }
+
+      .dos-item:hover .action-icon {
+        background: var(--primary-color);
+        color: white;
+        transform: scale(1.1);
+      }
+
+      .donts-item .action-icon {
+        color: var(--accent-color);
+      }
+
+      .donts-item:hover .action-icon {
+        background: var(--accent-color);
+        color: white;
+        transform: scale(1.1);
+      }
+
+      .action-content {
+        flex: 1;
+      }
+
+      .action-title {
+        color: var(--secondary-color);
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+      }
+
+      .action-description {
+        color: var(--text-gray);
+        font-family: 'Open Sans', sans-serif;
+        font-size: 0.95rem;
+        line-height: 1.6;
+      }
+
+      /* Prevention Strategies Section */
+      .prevention-strategies {
+        background: var(--gradient);
+        padding: 100px 0;
+        color: white;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .prevention-strategies::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('https://images.unsplash.com/photo-1579684385127-1ef15d508118?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80') no-repeat center;
+        background-size: cover;
+        opacity: 0.1;
+      }
+
+      .prevention-strategies .section-title {
+        color: white;
+      }
+
+      .prevention-strategies .section-title::after {
+        background: white;
+      }
+
+      .prevention-strategies .section-subtitle {
+        color: rgba(255, 255, 255, 0.9);
+      }
+
+      .strategies-content {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+        gap: 4rem;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+        align-items: center;
+        position: relative;
+        z-index: 2;
+      }
+
+      .strategies-image {
+        background: url('https://images.unsplash.com/photo-1584634731339-252c581abfc5?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80') no-repeat center;
+        background-size: cover;
+        border-radius: 20px;
+        height: 500px;
+        box-shadow: var(--shadow);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .strategies-image::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: var(--gradient);
+        opacity: 0.3;
+        border-radius: 20px;
+      }
+
+      .strategies-list {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+      }
+
+      .strategy-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 1.5rem;
+        padding: 1.5rem;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 15px;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        transition: all 0.3s ease;
+      }
+
+      .strategy-item:hover {
+        background: rgba(255, 255, 255, 0.2);
+        transform: translateX(10px);
+      }
+
+      .strategy-icon {
+        width: 60px;
+        height: 60px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        flex-shrink: 0;
+        font-size: 1.5rem;
+        transition: all 0.3s ease;
+      }
+
+      .strategy-item:hover .strategy-icon {
+        background: white;
+        color: var(--primary-color);
+        transform: scale(1.1);
+      }
+
+      .strategy-text {
+        flex: 1;
+      }
+
+      .strategy-title {
+        color: white;
+        font-size: 1.2rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+      }
+
+      .strategy-desc {
+        color: rgba(255, 255, 255, 0.9);
+        font-family: 'Open Sans', sans-serif;
+        font-size: 0.95rem;
+        line-height: 1.6;
+      }
+
+      /* Vaccination Section */
+      .vaccination-section {
+        background: white;
+        padding: 100px 0;
+        position: relative;
+      }
+
+      .vaccination-content {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+        gap: 4rem;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+        align-items: center;
+      }
+
+      .vaccination-info {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+      }
+
+      .vaccination-card {
+        background: white;
+        border-radius: 20px;
+        box-shadow: var(--shadow);
+        padding: 2.5rem;
+        transition: all 0.3s ease;
+        border-left: 5px solid var(--primary-color);
+      }
+
+      .vaccination-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+      }
+
+      .vaccination-title {
+        color: var(--secondary-color);
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .vaccination-title i {
+        color: var(--primary-color);
+        font-size: 1.8rem;
+      }
+
+      .vaccination-desc {
+        color: var(--text-gray);
+        font-family: 'Open Sans', sans-serif;
+        font-size: 1rem;
+        line-height: 1.6;
+        margin-bottom: 1.5rem;
+      }
+
+      .vaccination-benefits {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1.5rem;
+        margin-top: 2rem;
+      }
+
+      .benefit-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 1rem;
+        background: var(--background-light);
+        border-radius: 10px;
+        transition: all 0.3s ease;
+      }
+
+      .benefit-item:hover {
+        background: var(--primary-color);
+        color: white;
+        transform: translateX(5px);
+      }
+
+      .benefit-item i {
+        color: var(--success-color);
+        font-size: 1.2rem;
+      }
+
+      .benefit-item:hover i {
+        color: white;
+      }
+
+      .vaccination-image {
+        background: url('https://images.unsplash.com/photo-1559757175-0eb30cd8c063?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80') no-repeat center;
+        background-size: cover;
+        border-radius: 20px;
+        height: 500px;
+        box-shadow: var(--shadow);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .vaccination-image::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: var(--gradient);
+        opacity: 0.2;
+        border-radius: 20px;
+      }
+
+      /* FAQ Section */
+      .faq-section {
+        background: var(--background-light);
+        padding: 100px 0;
+        position: relative;
+      }
+
+      .faq-content {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+        gap: 4rem;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+        align-items: start;
+      }
+
+      .faq-image {
+        background: url('https://images.unsplash.com/photo-1559757148-5c350d0d3c56?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80') no-repeat center;
+        background-size: cover;
+        border-radius: 20px;
+        height: 500px;
+        box-shadow: var(--shadow);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .faq-image::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: var(--gradient);
+        opacity: 0.8;
+        border-radius: 20px;
+      }
+
+      .faq-items {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+      }
+
+      .faq-categories {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 2rem;
+        flex-wrap: wrap;
+      }
+
+      .faq-category {
+        padding: 12px 24px;
+        background: white;
+        border: 2px solid var(--border-color);
+        border-radius: 50px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .faq-category:hover {
+        border-color: var(--primary-color);
+        color: var(--primary-color);
+      }
+
+      .faq-category.active {
+        background: var(--primary-color);
+        border-color: var(--primary-color);
+        color: white;
+      }
+
+      .faq-item {
+        background: white;
+        border-radius: 15px;
+        box-shadow: var(--shadow);
+        padding: 1.5rem;
+        transition: all 0.3s ease;
+        border: 2px solid transparent;
+      }
+
+      .faq-item:hover {
+        border-color: var(--primary-color);
+        transform: translateY(-2px);
+      }
+
+      .faq-question {
+        color: var(--text-dark);
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        cursor: pointer;
+      }
+
+      .faq-question i {
+        color: var(--primary-color);
+        transition: transform 0.3s ease;
+      }
+
+      .faq-item.active .faq-question i {
+        transform: rotate(180deg);
+      }
+
+      .faq-answer {
+        color: var(--text-gray);
+        font-family: 'Open Sans', sans-serif;
+        font-size: 0.95rem;
+        line-height: 1.6;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+      }
+
+      .faq-item.active .faq-answer {
+        max-height: 200px;
+        margin-top: 1rem;
+      }
+
+      /* Footer */
+      .footer {
+        background: var(--secondary-color);
+        color: white;
+        padding: 80px 0 30px;
+        position: relative;
+      }
+
+      .footer::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 100px;
+        background: linear-gradient(to bottom, var(--primary-color), transparent);
+        opacity: 0.1;
+      }
+
+      .footer-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+        position: relative;
+        z-index: 2;
+      }
+
+      .footer-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 3rem;
+        margin-bottom: 3rem;
+      }
+
+      .footer-brand {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+      }
+
+      .footer-logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: white;
+      }
+
+      .footer-logo i {
+        color: var(--primary-color);
+        font-size: 2rem;
+      }
+
+      .footer-description {
+        color: rgba(255, 255, 255, 0.8);
+        font-family: 'Open Sans', sans-serif;
+        font-size: 0.95rem;
+        line-height: 1.6;
+        max-width: 350px;
+      }
+
+      .footer-column h3 {
+        font-size: 1.2rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        margin-bottom: 1.5rem;
+        color: white;
+      }
+
+      .footer-links {
+        list-style: none;
+      }
+
+      .footer-links li {
+        margin-bottom: 0.75rem;
+      }
+
+      .footer-links a {
+        color: rgba(255, 255, 255, 0.8);
+        font-family: 'Poppins', sans-serif;
+        font-size: 0.95rem;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .footer-links a:hover {
+        color: white;
+        transform: translateX(5px);
+      }
+
+      .social-links {
+        display: flex;
+        gap: 1rem;
+        margin-top: 1.5rem;
+      }
+
+      .social-link {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        background: rgba(255, 255, 255, 0.1);
+        border: 2px solid transparent;
+      }
+
+      .social-link:hover {
+        transform: translateY(-3px);
+        background: var(--primary-color);
+        border-color: var(--primary-color);
+      }
+
+      .footer-bottom {
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        padding-top: 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+
+      .copyright {
+        color: rgba(255, 255, 255, 0.8);
+        font-family: 'Open Sans', sans-serif;
+        font-size: 0.9rem;
+      }
+
+      .footer-bottom-links {
+        display: flex;
+        gap: 2rem;
+      }
+
+      .footer-bottom-links a {
+        color: rgba(255, 255, 255, 0.8);
+        font-family: 'Poppins', sans-serif;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        transition: color 0.3s ease;
+      }
+
+      .footer-bottom-links a:hover {
+        color: white;
+      }
+
+      /* Responsive Design */
+      @media (max-width: 1024px) {
+        .hero-title {
+          font-size: 3rem;
+        }
+        
+        .section-title {
+          font-size: 2.5rem;
+        }
+        
+        .dos-donts-grid,
+        .faq-content,
+        .strategies-content,
+        .vaccination-content {
+          grid-template-columns: 1fr;
+        }
+        
+        .faq-image,
+        .strategies-image,
+        .vaccination-image {
+          height: 400px;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .nav {
+          padding: 1rem;
+          flex-wrap: wrap;
+        }
+
+        .nav-links {
+          display: none;
+          width: 100%;
+          flex-direction: column;
+          gap: 1rem;
+          margin-top: 1rem;
+          background: white;
+          padding: 1rem;
+          border-radius: 10px;
+          box-shadow: var(--shadow);
+        }
+
+        .nav-links.active {
+          display: flex;
+        }
+
+        .mobile-menu-btn {
+          display: block;
+        }
+
+        .hero {
+          padding: 140px 0 80px;
+          margin-top: 60px;
+        }
+
+        .hero-title {
+          font-size: 2.5rem;
+        }
+
+        .hero-buttons {
+          flex-direction: column;
+          align-items: center;
+        }
+
+        .section {
+          padding: 80px 0;
+        }
+
+        .section-title {
+          font-size: 2rem;
+        }
+
+        .steps-grid,
+        .vaccination-benefits {
+          grid-template-columns: 1fr;
+        }
+
+        .dos-item,
+        .donts-item {
+          flex-direction: column;
+          text-align: center;
+        }
+
+        .action-icon {
+          margin: 0 auto 1rem;
+        }
+
+        .strategy-item {
+          flex-direction: column;
+          text-align: center;
+        }
+
+        .strategy-icon {
+          margin: 0 auto 0.5rem;
+        }
+
+        .footer-grid {
+          grid-template-columns: 1fr;
+          text-align: center;
+        }
+
+        .footer-bottom {
+          flex-direction: column;
+          text-align: center;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .hero-title {
+          font-size: 2rem;
+        }
+
+        .section-title {
+          font-size: 1.8rem;
+        }
+
+        .dos-donts-grid,
+        .faq-content,
+        .strategies-content,
+        .vaccination-content {
+          grid-template-columns: 1fr;
+        }
+
+        .faq-categories {
+          justify-content: center;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Header -->
+    <header class="header">
+      <nav class="nav">
+        <div class="logo">
+          <i class="fas fa-lungs-virus"></i>
+          <span>TB Detect</span>
+        </div>
+        <button class="mobile-menu-btn">
+          <i class="fas fa-bars"></i>
+        </button>
+        <ul class="nav-links">
+          <li><a href="{{ url_for('home') }}">Home</a></li>
+          <li><a href="{{ url_for('upload') }}">Upload</a></li>
+          <li><a href="{{ url_for('prevention') }}" class="active">Prevention</a></li>
+          <li><a href="{{ url_for('about_us') }}">About Us</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="hero-content">
+        <h1 class="hero-title">TB Prevention Guide</h1>
+        <p class="hero-subtitle">
+          Comprehensive strategies and essential practices to protect yourself and your community from tuberculosis infection
+        </p>
+        <div class="hero-buttons">
+          <a href="#prevention-steps" class="btn animate-pulse">
+            <i class="fas fa-shield-virus"></i>
+            Prevention Steps
+          </a>
+          <a href="#vaccination" class="btn btn-secondary">
+            <i class="fas fa-syringe"></i>
+            Vaccination Info
+          </a>
+        </div>
+        
+        <div class="breadcrumb">
+          <a href="{{ url_for('home') }}">Home</a>
+          <i class="fas fa-chevron-right"></i>
+          <span>Prevention</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Prevention Steps Section -->
+    <section id="prevention-steps" class="prevention-steps">
+      <h2 class="section-title">Essential Prevention Steps</h2>
+      <p class="section-subtitle">
+        Follow these crucial steps to significantly reduce your risk of tuberculosis infection
+      </p>
+      
+      <div class="steps-grid">
+        <div class="step-card" data-aos="fade-up" data-aos-delay="100">
+          <div class="step-number">1</div>
+          <div class="step-icon">
+            <i class="fas fa-head-side-mask"></i>
+          </div>
+          <h3 class="step-title">Respiratory Protection</h3>
+          <p class="step-desc">
+            Use appropriate masks in healthcare settings and crowded areas. Proper masking significantly reduces airborne transmission risk by filtering TB bacteria.
+          </p>
+        </div>
+        
+        <div class="step-card" data-aos="fade-up" data-aos-delay="200">
+          <div class="step-number">2</div>
+          <div class="step-icon">
+            <i class="fas fa-hands-wash"></i>
+          </div>
+          <h3 class="step-title">Hygiene Practices</h3>
+          <p class="step-desc">
+            Regular handwashing with soap and water, proper respiratory etiquette, and surface disinfection help prevent TB spread in households and communities.
+          </p>
+        </div>
+        
+        <div class="step-card" data-aos="fade-up" data-aos-delay="300">
+          <div class="step-number">3</div>
+          <div class="step-icon">
+            <i class="fas fa-wind"></i>
+          </div>
+          <h3 class="step-title">Ventilation Improvement</h3>
+          <p class="step-desc">
+            Ensure good air circulation in living and working spaces. TB bacteria can linger in stagnant air for hours, making ventilation crucial for prevention.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Do's and Don'ts Section -->
+    <section class="dos-donts">
+      <h2 class="section-title">TB Prevention Guidelines</h2>
+      <p class="section-subtitle">
+        Essential practices to protect yourself and others from tuberculosis infection
+      </p>
+      
+      <div class="dos-donts-grid">
+        <div class="dos-card" data-aos="fade-right">
+          <div class="dos-header">
+            <h3 class="dos-title">Do's - Protective Measures</h3>
+          </div>
+          <div class="dos-list">
+            <div class="dos-item">
+              <div class="action-icon">
+                <i class="fas fa-stethoscope"></i>
+              </div>
+              <div class="action-content">
+                <h4 class="action-title">Seek Medical Attention</h4>
+                <p class="action-description">
+                  Consult healthcare providers immediately for persistent symptoms. Early diagnosis enables effective treatment and prevents complications.
+                </p>
+              </div>
+            </div>
+            
+            <div class="dos-item">
+              <div class="action-icon">
+                <i class="fas fa-vial"></i>
+              </div>
+              <div class="action-content">
+                <h4 class="action-title">Complete TB Testing</h4>
+                <p class="action-description">
+                  Undergo comprehensive testing if exposed to TB. Early detection through skin tests, blood tests, and chest X-rays saves lives.
+                </p>
+              </div>
+            </div>
+            
+            <div class="dos-item">
+              <div class="action-icon">
+                <i class="fas fa-head-side-mask"></i>
+              </div>
+              <div class="action-content">
+                <h4 class="action-title">Wear Protective Masks</h4>
+                <p class="action-description">
+                  Use N95 masks in healthcare settings and crowded areas. Proper masking significantly reduces airborne transmission risk.
+                </p>
+              </div>
+            </div>
+            
+            <div class="dos-item">
+              <div class="action-icon">
+                <i class="fas fa-hands-wash"></i>
+              </div>
+              <div class="action-content">
+                <h4 class="action-title">Practice Respiratory Hygiene</h4>
+                <p class="action-description">
+                  Cover mouth when coughing/sneezing. Use tissues or elbow to prevent droplet spread. Dispose of tissues safely.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="donts-card" data-aos="fade-left">
+          <div class="donts-header">
+            <h3 class="donts-title">Don'ts - Risk Avoidance</h3>
+          </div>
+          <div class="donts-list">
+            <div class="donts-item">
+              <div class="action-icon">
+                <i class="fas fa-times-circle"></i>
+              </div>
+              <div class="action-content">
+                <h4 class="action-title">Don't Ignore Symptoms</h4>
+                <p class="action-description">
+                  Never dismiss persistent cough, fever, or weight loss. Delayed treatment increases complications and transmission risks.
+                </p>
+              </div>
+            </div>
+            
+            <div class="donts-item">
+              <div class="action-icon">
+                <i class="fas fa-users-slash"></i>
+              </div>
+              <div class="action-content">
+                <h4 class="action-title">Avoid Close Contact</h4>
+                <p class="action-description">
+                  Maintain distance from active TB patients. TB spreads through airborne droplets in enclosed, poorly ventilated spaces.
+                </p>
+              </div>
+            </div>
+            
+            <div class="donts-item">
+              <div class="action-icon">
+                <i class="fas fa-building"></i>
+              </div>
+              <div class="action-content">
+                <h4 class="action-title">Avoid Crowded Spaces</h4>
+                <p class="action-description">
+                  Steer clear of poorly ventilated, crowded areas. TB bacteria can linger in the air for hours in enclosed environments.
+                </p>
+              </div>
+            </div>
+            
+            <div class="donts-item">
+              <div class="action-icon">
+                <i class="fas fa-smoking"></i>
+              </div>
+              <div class="action-content">
+                <h4 class="action-title">Avoid Smoking & Alcohol</h4>
+                <p class="action-description">
+                  Smoking damages lungs and alcohol weakens immunity, both increasing TB susceptibility. Maintain healthy lifestyle choices.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Prevention Strategies Section -->
+    <section class="prevention-strategies">
+      <h2 class="section-title">Comprehensive Protection Strategies</h2>
+      <p class="section-subtitle">
+        Multi-layered approaches to safeguard yourself and your community from tuberculosis
+      </p>
+      
+      <div class="strategies-content">
+        <div class="strategies-image" data-aos="fade-right"></div>
+        <div class="strategies-list" data-aos="fade-left">
+          <div class="strategy-item">
+            <div class="strategy-icon">
+              <i class="fas fa-syringe"></i>
+            </div>
+            <div class="strategy-text">
+              <h3 class="strategy-title">Vaccination & Immunization</h3>
+              <p class="strategy-desc">
+                BCG vaccination provides crucial protection, especially for children in high-prevalence regions. Consult healthcare providers for vaccination recommendations.
+              </p>
+            </div>
+          </div>
+          
+          <div class="strategy-item">
+            <div class="strategy-icon">
+              <i class="fas fa-hand-sparkles"></i>
+            </div>
+            <div class="strategy-text">
+              <h3 class="strategy-title">Hygiene & Sanitation</h3>
+              <p class="strategy-desc">
+                Regular handwashing, respiratory etiquette, and proper ventilation significantly reduce transmission risks in households and communities.
+              </p>
+            </div>
+          </div>
+          
+          <div class="strategy-item">
+            <div class="strategy-icon">
+              <i class="fas fa-shield-virus"></i>
+            </div>
+            <div class="strategy-text">
+              <h3 class="strategy-title">Personal Protection</h3>
+              <p class="strategy-desc">
+                Use appropriate masks in high-risk settings, maintain social distancing, and avoid crowded, poorly ventilated spaces whenever possible.
+              </p>
+            </div>
+          </div>
+          
+          <div class="strategy-item">
+            <div class="strategy-icon">
+              <i class="fas fa-apple-alt"></i>
+            </div>
+            <div class="strategy-text">
+              <h3 class="strategy-title">Healthy Lifestyle</h3>
+              <p class="strategy-desc">
+                Balanced nutrition, regular exercise, adequate sleep, and stress management strengthen immune systems against TB infection.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Vaccination Section -->
+    <section id="vaccination" class="vaccination-section">
+      <h2 class="section-title">TB Vaccination Information</h2>
+      <p class="section-subtitle">
+        Understanding the role of vaccination in tuberculosis prevention and control
+      </p>
+      
+      <div class="vaccination-content">
+        <div class="vaccination-info">
+          <div class="vaccination-card" data-aos="fade-right">
+            <h3 class="vaccination-title">
+              <i class="fas fa-shield-alt"></i>
+              BCG Vaccine Overview
+            </h3>
+            <p class="vaccination-desc">
+              The Bacille Calmette-Guérin (BCG) vaccine has been used since 1921 to prevent tuberculosis. While it doesn't always prevent infection, it significantly reduces the risk of severe TB disease in children.
+            </p>
+            
+            <div class="vaccination-benefits">
+              <div class="benefit-item">
+                <i class="fas fa-check-circle"></i>
+                <span>Protects children from severe TB</span>
+              </div>
+              <div class="benefit-item">
+                <i class="fas fa-check-circle"></i>
+                <span>Reduces meningitis risk</span>
+              </div>
+              <div class="benefit-item">
+                <i class="fas fa-check-circle"></i>
+                <span>Decreases mortality in children</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="vaccination-card" data-aos="fade-right" data-aos-delay="100">
+            <h3 class="vaccination-title">
+              <i class="fas fa-user-md"></i>
+              Vaccination Recommendations
+            </h3>
+            <p class="vaccination-desc">
+              BCG vaccination is recommended for infants and children in countries with high TB prevalence. Healthcare workers and travelers to high-risk areas may also benefit from vaccination after medical consultation.
+            </p>
+            
+            <div class="vaccination-benefits">
+              <div class="benefit-item">
+                <i class="fas fa-baby"></i>
+                <span>Infants in high-risk areas</span>
+              </div>
+              <div class="benefit-item">
+                <i class="fas fa-user-nurse"></i>
+                <span>Healthcare workers</span>
+              </div>
+              <div class="benefit-item">
+                <i class="fas fa-plane"></i>
+                <span>Travelers to endemic regions</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="vaccination-image" data-aos="fade-left"></div>
+      </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq-section">
+      <h2 class="section-title">Prevention FAQs</h2>
+      <p class="section-subtitle">
+        Answers to common questions about tuberculosis prevention and protection
+      </p>
+      
+      <div class="faq-content">
+        <div class="faq-image" data-aos="fade-right"></div>
+        <div class="faq-items" data-aos="fade-left">
+          <div class="faq-categories">
+            <div class="faq-category active">General</div>
+            <div class="faq-category">Vaccination</div>
+            <div class="faq-category">Protection</div>
+            <div class="faq-category">Transmission</div>
+          </div>
+          
+          <div class="faq-item active">
+            <div class="faq-question">
+              How effective are masks in preventing TB transmission?
+              <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="faq-answer">
+              Properly fitted N95 or equivalent respirators are highly effective in healthcare settings, filtering over 95% of airborne particles including TB bacteria. Surgical masks provide some protection but are less effective than respirators.
+            </div>
+          </div>
+          
+          <div class="faq-item">
+            <div class="faq-question">
+              Can TB be prevented through vaccination alone?
+              <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="faq-answer">
+              No, vaccination is just one component of TB prevention. The BCG vaccine reduces severe disease risk in children but doesn't prevent infection. Comprehensive prevention requires multiple strategies including early detection, treatment, and infection control measures.
+            </div>
+          </div>
+          
+          <div class="faq-item">
+            <div class="faq-question">
+              How can I protect my family if someone has TB?
+              <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="faq-answer">
+              Ensure good ventilation at home, have the infected person wear a mask, practice respiratory hygiene, and ensure all household members get tested. Follow medical advice for preventive therapy if recommended.
+            </div>
+          </div>
+          
+          <div class="faq-item">
+            <div class="faq-question">
+              What's the most effective way to prevent TB spread in communities?
+              <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="faq-answer">
+              The most effective community prevention combines early case detection, complete treatment of active cases, infection control in healthcare settings, and addressing social determinants like overcrowding and poverty that facilitate TB transmission.
+            </div>
+          </div>
+          
+          <div class="faq-item">
+            <div class="faq-question">
+              Are there new TB vaccines in development?
+              <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="faq-answer">
+              Yes, multiple new TB vaccines are in clinical trials aiming to provide better protection than BCG, including vaccines for adolescents and adults, and preventive therapies for latent TB infection.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="footer-content">
+        <div class="footer-grid">
+          <div class="footer-brand">
+            <div class="footer-logo">
+              <i class="fas fa-lungs-virus"></i>
+              <span>TB Detect</span>
+            </div>
+            <p class="footer-description">
+              Pioneering AI-powered tuberculosis detection to create a world free from TB. Advanced technology, compassionate care, global impact.
+            </p>
+            <div class="social-links">
+              <a href="#" class="social-link">
+                <i class="fab fa-facebook-f"></i>
+              </a>
+              <a href="#" class="social-link">
+                <i class="fab fa-twitter"></i>
+              </a>
+              <a href="#" class="social-link">
+                <i class="fab fa-linkedin-in"></i>
+              </a>
+              <a href="#" class="social-link">
+                <i class="fab fa-instagram"></i>
+              </a>
+            </div>
+          </div>
+          
+          <div class="footer-column">
+            <h3>Quick Links</h3>
+            <ul class="footer-links">
+              <li><a href="{{ url_for('home') }}"><i class="fas fa-home"></i> Home</a></li>
+              <li><a href="{{ url_for('upload') }}"><i class="fas fa-upload"></i> Upload X-Ray</a></li>
+              <li><a href="{{ url_for('prevention') }}"><i class="fas fa-shield-alt"></i> Prevention</a></li>
+              <li><a href="{{ url_for('about_us') }}"><i class="fas fa-info-circle"></i> About Us</a></li>
+            </ul>
+          </div>
+          
+          <div class="footer-column">
+            <h3>Resources</h3>
+            <ul class="footer-links">
+              <li><a href="#"><i class="fas fa-globe"></i> WHO Guidelines</a></li>
+              <li><a href="#"><i class="fas fa-book-medical"></i> Research Papers</a></li>
+              <li><a href="#"><i class="fas fa-chart-line"></i> Statistics</a></li>
+              <li><a href="#"><i class="fas fa-download"></i> Mobile App</a></li>
+            </ul>
+          </div>
+          
+          <div class="footer-column">
+            <h3>Support</h3>
+            <ul class="footer-links">
+              <li><a href="#"><i class="fas fa-question-circle"></i> Help Center</a></li>
+              <li><a href="#"><i class="fas fa-phone-alt"></i> Contact Us</a></li>
+              <li><a href="#"><i class="fas fa-bug"></i> Report Issue</a></li>
+              <li><a href="#"><i class="fas fa-comments"></i> Feedback</a></li>
+            </ul>
+          </div>
+        </div>
+        
+        <div class="footer-bottom">
+          <div class="copyright">© 2024 TB Detect. All rights reserved. Fighting TB with prevention and innovation.</div>
+          <div class="footer-bottom-links">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+            <a href="#">Cookie Policy</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script>
+      // Initialize AOS animations
+      AOS.init({
+        duration: 1000,
+        once: true,
+        offset: 100
+      });
+
+      // Mobile menu toggle
+      document.querySelector('.mobile-menu-btn').addEventListener('click', function() {
+        document.querySelector('.nav-links').classList.toggle('active');
+        this.querySelector('i').classList.toggle('fa-bars');
+        this.querySelector('i').classList.toggle('fa-times');
+      });
+
+      // Header scroll effect
+      window.addEventListener('scroll', function() {
+        const header = document.querySelector('.header');
+        if (window.scrollY > 100) {
+          header.classList.add('scrolled');
+        } else {
+          header.classList.remove('scrolled');
+        }
+      });
+
+      // FAQ accordion functionality
+      document.querySelectorAll('.faq-question').forEach(question => {
+        question.addEventListener('click', () => {
+          const item = question.parentElement;
+          const isActive = item.classList.contains('active');
+          
+          // Close all items
+          document.querySelectorAll('.faq-item').forEach(faqItem => {
+            faqItem.classList.remove('active');
+          });
+          
+          // Open clicked item if it wasn't active
+          if (!isActive) {
+            item.classList.add('active');
+          }
+        });
+      });
+
+      // FAQ category switching
+      document.querySelectorAll('.faq-category').forEach(category => {
+        category.addEventListener('click', () => {
+          document.querySelectorAll('.faq-category').forEach(cat => cat.classList.remove('active'));
+          category.classList.add('active');
+        });
+      });
+
+      // Smooth scrolling for anchor links
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+          e.preventDefault();
+          const target = document.querySelector(this.getAttribute('href'));
+          if (target) {
+            target.scrollIntoView({
+              behavior: 'smooth',
+              block: 'start'
+            });
+          }
+        });
+      });
+
+      // Add loading animation to cards on scroll
+      const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+      };
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = '1';
+            entry.target.style.transform = 'translateY(0)';
+          }
+        });
+      }, observerOptions);
+
+      // Observe all cards for animation
+      document.querySelectorAll('.step-card, .vaccination-card, .strategy-item').forEach(card => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(30px)';
+        card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        observer.observe(card);
+      });
+    </script>
+  </body>
+</html>
