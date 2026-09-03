@@ -2,13 +2,17 @@ import os
 import numpy as np
 import tensorflow as tf
 from flask import Flask, request, render_template, jsonify, flash, redirect, url_for
-from keras.preprocessing.image import load_img, img_to_array
+from werkzeug.utils import secure_filename
+try:
+    from keras.preprocessing.image import load_img, img_to_array
+except ImportError:
+    from tensorflow.keras.preprocessing.image import load_img, img_to_array
 import cv2
 import gc
 
 # Initialize Flask app
 app = Flask(__name__)
-app.secret_key = 'your_secret_key'
+app.secret_key = os.environ.get('SECRET_KEY', os.urandom(24).hex())
 
 # Set base directory for models and uploads
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -17,6 +21,7 @@ UPLOAD_FOLDER = os.path.join(BASE_DIR, 'static', 'uploads')
 
 # Ensure uploads directory exists
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+app.config['MAX_CONTENT_LENGTH'] = 10 * 1024 * 1024  # 10 MB
 
 # DON'T load models at startup - declare as None
 tb_classification_model = None
@@ -78,12 +83,13 @@ def upload():
             flash('File type not supported')
             return redirect(request.url)
         try:
-            image_path = os.path.join(UPLOAD_FOLDER, file.filename)
+            safe_name = secure_filename(file.filename)
+            image_path = os.path.join(UPLOAD_FOLDER, safe_name)
             file.save(image_path)
             if not is_chest_xray(image_path):
                 flash('Uploaded image is not a valid chest X-ray.')
                 return redirect(request.url)
-            return render_template('upload.html', image_file=file.filename, show_predict_button=True)
+            return render_template('upload.html', image_file=safe_name, show_predict_button=True)
         except Exception as e:
             flash(f'Error saving file: {str(e)}')
             return redirect(request.url)
@@ -92,48 +98,39 @@ def upload():
 # Predict route - Load classification model only when predicting
 @app.route('/predict', methods=['POST'])
 def predict():
-    image_file = request.form['image_file']
+    image_file = secure_filename(request.form['image_file'])
     image_path = os.path.join(UPLOAD_FOLDER, image_file)
     try:
-        # Load classification model only when user clicks predict
         load_classification_model()
-        
-        img = load_img(image_path, target_size=IMG_SIZE)
-        img_array = img_to_array(img)
-        img_array = np.expand_dims(img_array, axis=0) / 255.0
+        _, img_array = load_and_preprocess_image(image_path, target_size=IMG_SIZE)
         tb_classification_prediction = tb_classification_model.predict(img_array)
         tb_predicted_class = np.argmax(tb_classification_prediction, axis=1)[0]
         tb_accuracy = np.max(tb_classification_prediction) * 100
-        if tb_predicted_class == 0:
-            result = "NO"
-            heatmap_url = None
-        else:
-            result = "YES"
-            heatmap_url = url_for('generate_heatmap', image_file=image_file)
+        result = "NO" if tb_predicted_class == 0 else "YES"
         return render_template('upload.html', result=result, accuracy=tb_accuracy, image_file=image_file)
     except Exception as e:
         flash(f'Error during prediction: {str(e)}')
-        return redirect(request.url)
+        return redirect(url_for('upload'))
 
 # Generate heatmap route - Load densenet model only when generating heatmap
 @app.route('/generate_heatmap', methods=['POST'])
 def generate_heatmap():
     try:
-        image_file = request.form['image_file']
+        image_file = secure_filename(request.form['image_file'])
         img_path = os.path.join(UPLOAD_FOLDER, image_file)
-        
-        # Load densenet model only when user clicks heatmap button
+
         load_densenet_model()
-        
+
         _, img_array = load_and_preprocess_image(img_path, target_size=IMG_SIZE)
         heatmap = generate_gradcam_heatmap(tb_densenet_model, img_array)
         overlayed_img = overlay_heatmap(heatmap, img_path)
         heatmap_path = os.path.join(UPLOAD_FOLDER, f'heatmap_{image_file}')
         cv2.imwrite(heatmap_path, overlayed_img)
         heatmap_url = url_for('static', filename=f'uploads/heatmap_{image_file}')
-        return render_template('upload.html', heatmap_url=heatmap_url, image_file=image_file)
+        return render_template('upload.html', heatmap_url=heatmap_url, image_file=image_file, result="YES")
     except Exception as e:
-        return jsonify({'error': str(e)}), 500
+        flash(f'Error generating heatmap: {str(e)}')
+        return redirect(url_for('upload'))
 
 # Image preprocessing
 def load_and_preprocess_image(image_path, target_size=(224, 224)):
@@ -142,19 +139,18 @@ def load_and_preprocess_image(image_path, target_size=(224, 224)):
     img_array = np.expand_dims(img_array, axis=0) / 255.0
     return img, img_array
 
-# Grad-CAM heatmap generation (fixed indexing)
+# Grad-CAM heatmap generation
 def generate_gradcam_heatmap(model, img_array, layer_name="conv5_block16_2_conv"):
-    grad_model = tf.keras.models.Model(
-        inputs=model.input,
-        outputs=[model.output, model.get_layer(layer_name).output]
+    grad_model = tf.keras.Model(
+        inputs=model.inputs,
+        outputs=[model.get_layer(layer_name).output, model.output]
     )
     img_tensor = tf.convert_to_tensor(img_array, dtype=tf.float32)
     with tf.GradientTape() as tape:
         tape.watch(img_tensor)
-        predictions, conv_output = grad_model(img_tensor)
-        # ✅ Convert tensor to int before indexing
-        class_idx = int(tf.argmax(predictions[0]))
-        class_output = predictions[0][class_idx]  # scalar
+        conv_output, predictions = grad_model(img_tensor)
+        class_idx = tf.argmax(predictions[0])
+        class_output = predictions[0][class_idx]
     grads = tape.gradient(class_output, conv_output)
     pooled_grads = tf.reduce_mean(grads, axis=(0, 1, 2))
     conv_output = conv_output[0]

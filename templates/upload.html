@@ -792,7 +792,7 @@
           </div>
 
           <!-- Image Upload Form - EXACT SAME AS ORIGINAL -->
-          <form action="/upload" method="POST" enctype="multipart/form-data" class="center">
+          <form action="{{ url_for('upload') }}" method="POST" enctype="multipart/form-data" class="center">
             <div class="upload-area" id="uploadArea">
               <i class="fas fa-cloud-upload-alt upload-icon"></i>
               <p class="upload-text">
@@ -846,7 +846,7 @@
               </div>
 
               <!-- Predict Button - EXACT SAME AS ORIGINAL -->
-              <form action="/predict" method="POST" class="center" id="predictForm">
+              <form action="{{ url_for('predict') }}" method="POST" class="center" id="predictForm">
                 <input type="hidden" name="image_file" value="{{ image_file }}">
                 <div class="result-actions">
                   <button type="submit" class="btn">Predict</button>
@@ -866,15 +866,17 @@
                         <strong>{{ result }}</strong>
                     </td>
                 </tr>
+                {% if accuracy %}
                 <tr>
                     <th>Confidence Score</th>
                     <td><strong>{{ accuracy }}%</strong></td>
                 </tr>
+                {% endif %}
             </table>
 
             <!-- Show Generate Heatmap Button - EXACT SAME AS ORIGINAL -->
             {% if result == "YES" %}
-                <form action="/generate_heatmap" method="POST" class="center" id="heatmapForm">
+                <form action="{{ url_for('generate_heatmap') }}" method="POST" class="center" id="heatmapForm">
                     <input type="hidden" name="image_file" value="{{ image_file }}">
                     <div class="result-actions">
                       <button type="submit" class="btn">Detect Area</button>
