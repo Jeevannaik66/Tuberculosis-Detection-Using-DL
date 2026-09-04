@@ -629,21 +629,46 @@
         font-weight: 700;
       }
 
-      /* NEW: Loading animation */
-      .loading-spinner {
+      /* Loading overlay */
+      .loading-overlay {
         display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 9999;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .loading-overlay.active {
+        display: flex;
+      }
+
+      .loading-box {
+        background: white;
+        border-radius: 20px;
+        padding: 3rem 4rem;
         text-align: center;
-        padding: 2rem;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
       }
 
       .spinner {
-        width: 40px;
-        height: 40px;
-        border: 4px solid rgba(55, 71, 189, 0.2);
-        border-left: 4px solid var(--primary-color);
+        width: 50px;
+        height: 50px;
+        border: 5px solid rgba(55, 71, 189, 0.2);
+        border-left: 5px solid var(--primary-color);
         border-radius: 50%;
         animation: spin 1s linear infinite;
-        margin: 0 auto;
+        margin: 0 auto 1.5rem;
+      }
+
+      .loading-box p {
+        color: var(--secondary-color);
+        font-weight: 600;
+        font-size: 1.1rem;
       }
 
       @keyframes spin {
@@ -668,6 +693,10 @@
           padding: 1rem;
           border-radius: 10px;
           box-shadow: var(--shadow);
+          position: absolute;
+          top: 70px;
+          left: 0;
+          z-index: 999;
         }
 
         .nav-links.active {
@@ -791,8 +820,8 @@
             {% endwith %}
           </div>
 
-          <!-- Image Upload Form - EXACT SAME AS ORIGINAL -->
-          <form action="{{ url_for('upload') }}" method="POST" enctype="multipart/form-data" class="center">
+          <!-- Image Upload Form -->
+          <form action="{{ url_for('upload') }}" method="POST" enctype="multipart/form-data" class="center" id="uploadForm">
             <div class="upload-area" id="uploadArea">
               <i class="fas fa-cloud-upload-alt upload-icon"></i>
               <p class="upload-text">
@@ -825,18 +854,20 @@
     </section>
 
     <!-- Results Section -->
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+      <div class="loading-box">
+        <div class="spinner"></div>
+        <p id="loadingText">Processing your image...</p>
+      </div>
+    </div>
+
     <section class="results-section">
       <div class="container">
-        <div class="results-container">
-          <!-- Loading Spinner -->
-          <div class="loading-spinner" id="loadingSpinner">
-            <div class="spinner"></div>
-            <p>Processing your image...</p>
-          </div>
-
-          <!-- Display Uploaded Image - UPDATED FOR BETTER ALIGNMENT -->
+        <div class="results-container" id="resultsContainer">
+          <!-- Display Uploaded Image -->
           {% if image_file %}
-            <div class="result-card">
+            <div class="result-card" id="uploadedImageCard">
               <h3>Uploaded Image</h3>
               <div class="image-display-container">
                 <div class="image-wrapper">
@@ -845,59 +876,17 @@
                 </div>
               </div>
 
-              <!-- Predict Button - EXACT SAME AS ORIGINAL -->
-              <form action="{{ url_for('predict') }}" method="POST" class="center" id="predictForm">
-                <input type="hidden" name="image_file" value="{{ image_file }}">
-                <div class="result-actions">
-                  <button type="submit" class="btn">Predict</button>
-                </div>
-              </form>
-            </div>
-          {% endif %}
-
-          <!-- Display Prediction Result - EXACT SAME AS ORIGINAL -->
-          {% if result %}
-          <div class="result-card">
-            <h3>Prediction Result</h3>
-            <table class="result-table">
-                <tr>
-                    <th>TB Detected</th>
-                    <td class="{{ 'yes' if result == 'YES' else 'NO' }}">
-                        <strong>{{ result }}</strong>
-                    </td>
-                </tr>
-                {% if accuracy %}
-                <tr>
-                    <th>Confidence Score</th>
-                    <td><strong>{{ accuracy }}%</strong></td>
-                </tr>
-                {% endif %}
-            </table>
-
-            <!-- Show Generate Heatmap Button - EXACT SAME AS ORIGINAL -->
-            {% if result == "YES" %}
-                <form action="{{ url_for('generate_heatmap') }}" method="POST" class="center" id="heatmapForm">
-                    <input type="hidden" name="image_file" value="{{ image_file }}">
-                    <div class="result-actions">
-                      <button type="submit" class="btn">Detect Area</button>
-                    </div>
-                </form>
-            {% endif %}
-          </div>
-          {% endif %}
-
-          <!-- Display Heatmap - UPDATED FOR BETTER ALIGNMENT -->
-          {% if heatmap_url %}
-          <div class="result-card">
-            <h3>Detected Area</h3>
-            <div class="image-display-container">
-              <div class="image-wrapper">
-                <img src="{{ heatmap_url }}" alt="Heatmap" class="large">
-                <p class="image-caption">AI-detected areas of concern</p>
+              <div class="result-actions" id="predictActions">
+                <button type="button" class="btn" id="predictBtn" data-image="{{ image_file }}">
+                  <i class="fas fa-search"></i> Predict
+                </button>
               </div>
             </div>
-          </div>
           {% endif %}
+
+          <!-- Dynamic results inserted here by JavaScript -->
+          <div id="predictionResult"></div>
+          <div id="heatmapResult"></div>
         </div>
       </div>
     </section>
@@ -920,27 +909,21 @@
         }
       });
 
-      // File upload UI enhancements only
+      // File upload UI enhancements
       const uploadArea = document.getElementById('uploadArea');
       const fileInput = document.getElementById('fileInput');
       const fileInfo = document.getElementById('fileInfo');
       const fileName = document.getElementById('fileName');
       const fileSize = document.getElementById('fileSize');
       const resetBtn = document.getElementById('resetBtn');
-      const loadingSpinner = document.getElementById('loadingSpinner');
-      const predictForm = document.getElementById('predictForm');
-      const heatmapForm = document.getElementById('heatmapForm');
+      const loadingOverlay = document.getElementById('loadingOverlay');
+      const loadingText = document.getElementById('loadingText');
 
-      // Click on upload area to trigger file input
-      uploadArea.addEventListener('click', () => {
-        fileInput.click();
-      });
+      uploadArea.addEventListener('click', () => fileInput.click());
 
-      // Handle file selection - UI ONLY
       fileInput.addEventListener('change', (e) => {
         const file = e.target.files[0];
         if (file) {
-          // Display file info
           fileName.textContent = file.name;
           fileSize.textContent = formatFileSize(file.size);
           fileInfo.classList.add('active');
@@ -948,54 +931,256 @@
         }
       });
 
-      // Reset form - UI ONLY
       resetBtn.addEventListener('click', () => {
         fileInfo.classList.remove('active');
         uploadArea.classList.remove('active');
         fileInput.value = '';
       });
 
-      // Drag and drop functionality - UI ONLY
       uploadArea.addEventListener('dragover', (e) => {
         e.preventDefault();
         uploadArea.classList.add('active');
       });
 
-      uploadArea.addEventListener('dragleave', () => {
-        uploadArea.classList.remove('active');
-      });
+      uploadArea.addEventListener('dragleave', () => uploadArea.classList.remove('active'));
 
       uploadArea.addEventListener('drop', (e) => {
         e.preventDefault();
         uploadArea.classList.remove('active');
-        
         const file = e.dataTransfer.files[0];
         if (file) {
           fileInput.files = e.dataTransfer.files;
-          const event = new Event('change', { bubbles: true });
-          fileInput.dispatchEvent(event);
+          fileInput.dispatchEvent(new Event('change', { bubbles: true }));
         }
       });
 
-      // NEW: Show loading spinner when forms are submitted
-      if (predictForm) {
-        predictForm.addEventListener('submit', () => {
-          loadingSpinner.style.display = 'block';
+      function showLoading(text) {
+        loadingText.textContent = text;
+        loadingOverlay.classList.add('active');
+      }
+
+      function hideLoading() {
+        loadingOverlay.classList.remove('active');
+      }
+
+      function scrollToElement(el) {
+        setTimeout(() => {
+          el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 100);
+      }
+
+      function ajaxPost(url, formData) {
+        return fetch(url, {
+          method: 'POST',
+          headers: { 'X-Requested-With': 'XMLHttpRequest' },
+          body: formData
+        }).then(function(res) {
+          return res.json().then(function(data) {
+            if (!res.ok) throw new Error(data.error || 'Something went wrong');
+            return data;
+          });
         });
       }
 
-      if (heatmapForm) {
-        heatmapForm.addEventListener('submit', () => {
-          loadingSpinner.style.display = 'block';
+      // Current image file from server
+      var currentImageFile = '{{ image_file|default("", true) }}';
+
+      // Predict button
+      var predictBtn = document.getElementById('predictBtn');
+      if (predictBtn) {
+        predictBtn.addEventListener('click', function() {
+          showLoading('Analyzing X-ray...');
+          var formData = new FormData();
+          formData.append('image_file', predictBtn.dataset.image);
+
+          ajaxPost('{{ url_for("predict") }}', formData)
+            .then(function(data) {
+              hideLoading();
+              showPredictionResult(data);
+            })
+            .catch(function(err) {
+              hideLoading();
+              alert('Error: ' + err.message);
+            });
         });
       }
 
-      // Utility function for file size formatting
+      function showPredictionResult(data) {
+        var container = document.getElementById('predictionResult');
+        var statusClass = data.result === 'YES' ? 'yes' : 'NO';
+        var html = '<div class="result-card" id="predictionCard">' +
+          '<h3>Prediction Result</h3>' +
+          '<table class="result-table">' +
+            '<tr><th>TB Detected</th>' +
+            '<td class="' + statusClass + '"><strong>' + data.result + '</strong></td></tr>';
+
+        if (data.accuracy) {
+          html += '<tr><th>Confidence Score</th>' +
+            '<td><strong>' + data.accuracy + '%</strong></td></tr>';
+        }
+        html += '</table>';
+
+        if (data.result === 'YES') {
+          html += '<div class="result-actions" style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">' +
+            '<button type="button" class="btn" id="heatmapBtn"><i class="fas fa-fire"></i> Heatmap</button>' +
+          '</div>';
+        }
+        html += '</div>';
+        container.innerHTML = html;
+
+        // Clear previous heatmap/detection results
+        document.getElementById('heatmapResult').innerHTML = '';
+
+        scrollToElement(container);
+
+        // Attach heatmap and detect button handlers
+        var heatmapBtn = document.getElementById('heatmapBtn');
+        if (heatmapBtn) {
+          heatmapBtn.addEventListener('click', function() {
+            showLoading('Generating heatmap...');
+            var fd = new FormData();
+            fd.append('image_file', data.image_file);
+
+            ajaxPost('{{ url_for("generate_heatmap") }}', fd)
+              .then(function(res) {
+                hideLoading();
+                showHeatmapResult(res);
+              })
+              .catch(function(err) {
+                hideLoading();
+                alert('Error: ' + err.message);
+              });
+          });
+        }
+
+      }
+
+      function showHeatmapResult(data) {
+        var container = document.getElementById('heatmapResult');
+        container.innerHTML = '<div class="result-card">' +
+          '<h3>Heatmap Analysis</h3>' +
+          '<div class="image-display-container"><div class="image-wrapper">' +
+          '<img src="' + data.heatmap_url + '?t=' + Date.now() + '" alt="Heatmap" class="large">' +
+          '<p class="image-caption">AI-detected areas of concern (Grad-CAM)</p>' +
+          '</div></div></div>';
+        scrollToElement(container);
+      }
+
+
+      // AJAX upload form
+      var uploadForm = document.getElementById('uploadForm');
+      if (uploadForm) {
+        uploadForm.addEventListener('submit', function(e) {
+          e.preventDefault();
+          if (!fileInput.files.length) {
+            showAlert('Please select a file to upload.');
+            return;
+          }
+          showLoading('Validating X-ray image...');
+          var formData = new FormData(uploadForm);
+
+          fetch('{{ url_for("upload") }}', {
+            method: 'POST',
+            headers: { 'X-Requested-With': 'XMLHttpRequest' },
+            body: formData
+          })
+          .then(function(res) {
+            return res.json().then(function(data) {
+              if (!res.ok) throw new Error(data.error || 'Upload failed');
+              return data;
+            });
+          })
+          .then(function(data) {
+            hideLoading();
+            currentImageFile = data.image_file;
+            showUploadedImage(data);
+          })
+          .catch(function(err) {
+            hideLoading();
+            showAlert(err.message);
+          });
+        });
+      }
+
+      function showAlert(message) {
+        var container = document.getElementById('alertContainer');
+        container.innerHTML = '<div class="alert alert-danger">' +
+          '<i class="fas fa-exclamation-triangle"></i>' +
+          '<div>' + message + '</div></div>';
+        scrollToElement(container);
+      }
+
+      function showUploadedImage(data) {
+        // Clear alerts
+        document.getElementById('alertContainer').innerHTML = '';
+        // Clear previous results
+        document.getElementById('predictionResult').innerHTML = '';
+        document.getElementById('heatmapResult').innerHTML = '';
+
+        var container = document.getElementById('resultsContainer');
+        var existingCard = document.getElementById('uploadedImageCard');
+        var cardHtml = '<div class="result-card" id="uploadedImageCard">' +
+          '<h3>Uploaded Image</h3>' +
+          '<div class="image-display-container"><div class="image-wrapper">' +
+          '<img src="' + data.image_url + '?t=' + Date.now() + '" alt="Uploaded Image" class="large">' +
+          '<p class="image-caption">Your uploaded X-ray image</p>' +
+          '</div></div>' +
+          '<div class="result-actions" id="predictActions">' +
+          '<button type="button" class="btn" id="predictBtn" data-image="' + data.image_file + '">' +
+          '<i class="fas fa-search"></i> Predict</button>' +
+          '</div></div>';
+
+        if (existingCard) {
+          existingCard.outerHTML = cardHtml;
+        } else {
+          container.insertAdjacentHTML('afterbegin', cardHtml);
+        }
+
+        // Re-attach predict button handler
+        attachPredictHandler();
+        scrollToElement(document.getElementById('uploadedImageCard'));
+
+        // Reset upload area
+        fileInfo.classList.remove('active');
+        uploadArea.classList.remove('active');
+        fileInput.value = '';
+      }
+
+      function attachPredictHandler() {
+        var btn = document.getElementById('predictBtn');
+        if (btn) {
+          btn.addEventListener('click', function() {
+            showLoading('Analyzing X-ray...');
+            var fd = new FormData();
+            fd.append('image_file', btn.dataset.image);
+
+            ajaxPost('{{ url_for("predict") }}', fd)
+              .then(function(data) {
+                hideLoading();
+                showPredictionResult(data);
+              })
+              .catch(function(err) {
+                hideLoading();
+                alert('Error: ' + err.message);
+              });
+          });
+        }
+      }
+
+      // Attach on page load if predict button exists from server render
+      attachPredictHandler();
+
+      // Auto-scroll to uploaded image on page load
+      var uploadedImageCard = document.getElementById('uploadedImageCard');
+      if (uploadedImageCard) {
+        scrollToElement(uploadedImageCard);
+      }
+
       function formatFileSize(bytes) {
         if (bytes === 0) return '0 Bytes';
-        const k = 1024;
-        const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        var k = 1024;
+        var sizes = ['Bytes', 'KB', 'MB', 'GB'];
+        var i = Math.floor(Math.log(bytes) / Math.log(k));
         return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
       }
     </script>

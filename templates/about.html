@@ -657,9 +657,7 @@
         font-weight: 800;
         margin-bottom: 0.5rem;
         font-family: 'Open Sans', sans-serif;
-        background: white;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
+        color: white;
       }
 
       .stat-title {
@@ -989,6 +987,10 @@
           padding: 1rem;
           border-radius: 10px;
           box-shadow: var(--shadow);
+          position: absolute;
+          top: 70px;
+          left: 0;
+          z-index: 999;
         }
 
         .nav-links.active {
@@ -1078,8 +1080,8 @@
       <div class="hero-content">
         <h1 class="hero-title">About TB Detect</h1>
         <p class="hero-subtitle">
-          Pioneering AI-powered tuberculosis detection to create a healthier world. 
-          Learn about our mission, team, and commitment to fighting TB.
+          A deep learning project for automated tuberculosis screening from chest X-rays,
+          using DenseNet121 classification and Grad-CAM heatmaps.
         </p>
         
         <div class="breadcrumb">
@@ -1093,41 +1095,41 @@
     <!-- Mission Section -->
     <section class="mission-section">
       <div class="container">
-        <h2 class="section-title">Our Mission & Vision</h2>
+        <h2 class="section-title">About the Project</h2>
         <p class="section-subtitle">
-          Dedicated to pioneering innovative technologies for accurate tuberculosis diagnosis and prevention
+          A deep learning-based approach to assist in early tuberculosis screening from chest X-rays
         </p>
-        
+
         <div class="mission-content">
           <div class="mission-image" data-aos="fade-right"></div>
           <div class="mission-text" data-aos="fade-left">
             <div class="mission-card">
               <h3 class="mission-title">
                 <i class="fas fa-bullseye"></i>
-                Our Mission
+                Objective
               </h3>
               <p class="mission-desc">
-                To revolutionize tuberculosis detection through advanced AI technology, making accurate diagnosis accessible to everyone worldwide. We strive to reduce TB mortality rates by enabling early detection and timely intervention.
+                To build an AI-powered web application that can analyze chest X-ray images and detect signs of tuberculosis, providing quick screening results along with visual explanations of the model's findings.
               </p>
             </div>
-            
+
             <div class="mission-card">
               <h3 class="mission-title">
-                <i class="fas fa-eye"></i>
-                Our Vision
+                <i class="fas fa-database"></i>
+                Training Data
               </h3>
               <p class="mission-desc">
-                A world free from tuberculosis, where advanced technology and compassionate care work together to eliminate this preventable disease. We envision a future where no one suffers from undiagnosed or late-diagnosed TB.
+                The classification model is trained on publicly available chest X-ray datasets containing both Normal and TB-positive images. The detection model uses the TBX11K dataset with annotated bounding boxes around TB-affected regions.
               </p>
             </div>
-            
+
             <div class="mission-card">
               <h3 class="mission-title">
-                <i class="fas fa-handshake"></i>
-                Our Commitment
+                <i class="fas fa-exclamation-triangle"></i>
+                Disclaimer
               </h3>
               <p class="mission-desc">
-                We are committed to continuous innovation, ethical AI development, and global health equity. Our team works tirelessly to improve detection accuracy and make our technology available to underserved communities.
+                This tool is intended for educational and screening purposes only. It is not a substitute for professional medical diagnosis. Always consult a qualified healthcare provider for accurate TB diagnosis and treatment.
               </p>
             </div>
           </div>
@@ -1135,131 +1137,123 @@
       </div>
     </section>
 
-    <!-- Team Section -->
+    <!-- Technology Section -->
     <section class="team-section">
       <div class="container">
-        <h2 class="section-title">Meet Our Team</h2>
+        <h2 class="section-title">How It Works</h2>
         <p class="section-subtitle">
-          Passionate professionals dedicated to fighting tuberculosis through innovation and technology
+          Our system uses multiple deep learning models working together to analyze chest X-rays for tuberculosis indicators
         </p>
-        
+
         <div class="team-grid">
           <div class="team-card" data-aos="fade-up" data-aos-delay="100">
             <div class="team-avatar">
-              <i class="fas fa-user-md"></i>
+              <i class="fas fa-upload"></i>
             </div>
-            <h3 class="team-name">Dr. Sarah Chen</h3>
-            <div class="team-role">Chief Medical Officer</div>
+            <h3 class="team-name">Upload X-Ray</h3>
+            <div class="team-role">Step 1</div>
             <p class="team-desc">
-              Board-certified pulmonologist with 15+ years experience in TB diagnosis and treatment. Leads our medical research and clinical validation efforts.
+              Upload a chest X-ray image in common formats (JPEG, PNG). The system first validates that the image is a valid chest X-ray before proceeding with analysis.
             </p>
           </div>
-          
+
           <div class="team-card" data-aos="fade-up" data-aos-delay="200">
             <div class="team-avatar">
-              <i class="fas fa-robot"></i>
+              <i class="fas fa-brain"></i>
             </div>
-            <h3 class="team-name">Dr. Michael Rodriguez</h3>
-            <div class="team-role">AI Research Director</div>
+            <h3 class="team-name">AI Analysis</h3>
+            <div class="team-role">Step 2</div>
             <p class="team-desc">
-              PhD in Machine Learning with expertise in medical imaging analysis. Develops and optimizes our deep learning algorithms for TB detection.
+              A DenseNet121 deep learning model trained on thousands of labeled X-rays classifies the image as Normal or TB-positive with a confidence score.
             </p>
           </div>
-          
+
           <div class="team-card" data-aos="fade-up" data-aos-delay="300">
             <div class="team-avatar">
-              <i class="fas fa-laptop-code"></i>
+              <i class="fas fa-map-marked-alt"></i>
             </div>
-            <h3 class="team-name">Emily Johnson</h3>
-            <div class="team-role">Lead Software Engineer</div>
+            <h3 class="team-name">Visual Results</h3>
+            <div class="team-role">Step 3</div>
             <p class="team-desc">
-              Full-stack developer specializing in healthcare applications. Ensures our platform is secure, scalable, and user-friendly for global deployment.
+              Grad-CAM heatmaps highlight the regions the model focused on, showing which areas of the X-ray influenced the prediction.
             </p>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Values Section -->
+    <!-- Key Features Section -->
     <section class="values-section">
       <div class="container">
-        <h2 class="section-title">Our Values</h2>
+        <h2 class="section-title">Key Features</h2>
         <p class="section-subtitle">
-          The principles that guide our work and define our approach to tuberculosis detection
+          What makes this TB detection system useful for screening and analysis
         </p>
-        
+
         <div class="values-grid">
           <div class="value-card" data-aos="fade-up" data-aos-delay="100">
             <div class="value-icon">
-              <i class="fas fa-heart"></i>
+              <i class="fas fa-bolt"></i>
             </div>
-            <h3 class="value-title">Compassion</h3>
+            <h3 class="value-title">Instant Results</h3>
             <p class="value-desc">
-              We approach every case with empathy and understanding, recognizing the human impact behind each diagnosis and the importance of timely, accurate results.
+              Get classification results within seconds of uploading a chest X-ray. No waiting for manual review — the AI processes and responds in real time.
             </p>
           </div>
-          
+
           <div class="value-card" data-aos="fade-up" data-aos-delay="200">
             <div class="value-icon">
-              <i class="fas fa-flask"></i>
+              <i class="fas fa-search-plus"></i>
             </div>
-            <h3 class="value-title">Innovation</h3>
+            <h3 class="value-title">Visual Explanations</h3>
             <p class="value-desc">
-              We continuously push the boundaries of AI technology to improve detection accuracy, speed, and accessibility for tuberculosis diagnosis worldwide.
+              Heatmaps and bounding boxes show exactly where the model detected abnormalities, making results interpretable and transparent for review.
             </p>
           </div>
-          
+
           <div class="value-card" data-aos="fade-up" data-aos-delay="300">
             <div class="value-icon">
-              <i class="fas fa-globe"></i>
+              <i class="fas fa-shield-alt"></i>
             </div>
-            <h3 class="value-title">Global Impact</h3>
+            <h3 class="value-title">Pre-Check Validation</h3>
             <p class="value-desc">
-              We're committed to making our technology accessible to all communities, especially in regions with high TB burden and limited healthcare resources.
+              A separate validation model confirms the uploaded image is a valid chest X-ray before analysis, reducing false results from incorrect inputs.
             </p>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Stats Section -->
+    <!-- Technology Stack Section -->
     <section class="stats-section">
       <div class="container">
-        <h2 class="section-title">Our Impact</h2>
+        <h2 class="section-title">Technology Stack</h2>
         <p class="section-subtitle">
-          Making a difference in the global fight against tuberculosis through technology and innovation
+          Built with proven deep learning architectures and modern web technologies
         </p>
-        
+
         <div class="stats-grid">
           <div class="stat-card" data-aos="fade-up" data-aos-delay="100">
-            <div class="stat-number">50K+</div>
-            <h3 class="stat-title">Scans Analyzed</h3>
+            <div class="stat-number">DenseNet121</div>
+            <h3 class="stat-title">Classification Model</h3>
             <p class="stat-desc">
-              Our AI has processed over 50,000 chest X-rays, helping detect tuberculosis in its early stages across multiple countries.
+              A 121-layer convolutional neural network pre-trained on ImageNet, fine-tuned on labeled TB chest X-ray datasets for binary classification.
             </p>
           </div>
-          
+
           <div class="stat-card" data-aos="fade-up" data-aos-delay="200">
-            <div class="stat-number">95%</div>
-            <h3 class="stat-title">Detection Accuracy</h3>
+            <div class="stat-number">Grad-CAM</div>
+            <h3 class="stat-title">Explainability</h3>
             <p class="stat-desc">
-              Our deep learning model achieves 95% accuracy in identifying tuberculosis patterns, validated by medical professionals.
+              Gradient-weighted Class Activation Mapping generates heatmaps showing which areas of the X-ray influenced the model's decision.
             </p>
           </div>
-          
-          <div class="stat-card" data-aos="fade-up" data-aos-delay="300">
-            <div class="stat-number">15+</div>
-            <h3 class="stat-title">Countries Served</h3>
-            <p class="stat-desc">
-              We're actively working with healthcare providers in over 15 countries to improve TB detection and patient outcomes.
-            </p>
-          </div>
-          
+
           <div class="stat-card" data-aos="fade-up" data-aos-delay="400">
-            <div class="stat-number">24/7</div>
-            <h3 class="stat-title">Availability</h3>
+            <div class="stat-number">Flask</div>
+            <h3 class="stat-title">Web Framework</h3>
             <p class="stat-desc">
-              Our platform operates round-the-clock, ensuring healthcare providers can access TB detection capabilities whenever needed.
+              Lightweight Python web framework powering the application backend, with TensorFlow and OpenCV for image processing and inference.
             </p>
           </div>
         </div>
@@ -1271,66 +1265,65 @@
       <div class="container">
         <h2 class="section-title">Frequently Asked Questions</h2>
         <p class="section-subtitle">
-          Get answers to common questions about our organization and technology
+          Common questions about the TB detection system and how it works
         </p>
-        
+
         <div class="faq-content">
           <div class="faq-image" data-aos="fade-right"></div>
           <div class="faq-items" data-aos="fade-left">
             <div class="faq-categories">
               <div class="faq-category active">General</div>
               <div class="faq-category">Technology</div>
-              <div class="faq-category">Partnerships</div>
-              <div class="faq-category">Support</div>
+              <div class="faq-category">Usage</div>
             </div>
-            
+
             <div class="faq-item active">
               <div class="faq-question">
-                How accurate is your AI in detecting tuberculosis?
+                What image formats are supported?
                 <i class="fas fa-chevron-down"></i>
               </div>
               <div class="faq-answer">
-                Our deep learning model achieves over 95% accuracy in detecting tuberculosis patterns from chest X-rays. It's trained on thousands of validated medical images and continuously improves through machine learning and clinical feedback.
+                The system accepts standard image formats including JPEG and PNG. Upload a clear, well-lit chest X-ray image for the best results.
               </div>
             </div>
-            
+
             <div class="faq-item">
               <div class="faq-question">
-                Is TB Detect available for healthcare organizations?
+                What is a Grad-CAM heatmap?
                 <i class="fas fa-chevron-down"></i>
               </div>
               <div class="faq-answer">
-                Yes, we partner with hospitals, clinics, and healthcare organizations worldwide. Our technology integrates with existing systems and can be customized to meet specific workflow requirements.
+                Grad-CAM (Gradient-weighted Class Activation Mapping) is a technique that highlights the regions of an image that most influenced the model's prediction. Red areas indicate high importance, while blue areas had less influence.
               </div>
             </div>
-            
+
             <div class="faq-item">
               <div class="faq-question">
-                How do you ensure patient data privacy and security?
+                How is this different from a medical diagnosis?
                 <i class="fas fa-chevron-down"></i>
               </div>
               <div class="faq-answer">
-                We adhere to strict data protection regulations including HIPAA and GDPR. All medical images are anonymized, encrypted, and processed securely. We never share patient data without explicit consent.
+                This is a screening tool powered by AI, not a clinical diagnosis. It can flag potential TB indicators quickly, but a confirmed diagnosis requires proper medical testing, sputum analysis, and evaluation by a healthcare professional.
               </div>
             </div>
-            
+
             <div class="faq-item">
               <div class="faq-question">
-                Can your technology work in low-resource settings?
+                What models are used in the system?
                 <i class="fas fa-chevron-down"></i>
               </div>
               <div class="faq-answer">
-                Absolutely. Our platform is designed to work with basic internet connectivity and can process images from standard X-ray machines. We're committed to making TB detection accessible in all healthcare environments.
+                The system uses DenseNet121 for TB classification, a separate pre-check model to validate chest X-ray inputs, and Grad-CAM for generating visual heatmaps of the model's focus areas.
               </div>
             </div>
-            
+
             <div class="faq-item">
               <div class="faq-question">
-                How can I get involved with TB Detect?
+                Is my uploaded image stored or shared?
                 <i class="fas fa-chevron-down"></i>
               </div>
               <div class="faq-answer">
-                We welcome partnerships with researchers, healthcare providers, and organizations working in TB prevention. Contact us through our website to discuss collaboration opportunities or career openings.
+                Uploaded images are stored temporarily on the server for processing and are not shared with any third parties. They are used solely for generating the detection results.
               </div>
             </div>
           </div>
@@ -1348,22 +1341,8 @@
               <span>TB Detect</span>
             </div>
             <p class="footer-description">
-              Pioneering AI-powered tuberculosis detection to create a world free from TB. Advanced technology, compassionate care, global impact.
+              A deep learning project for automated tuberculosis screening from chest X-rays. Built with DenseNet121 and Grad-CAM.
             </p>
-            <div class="social-links">
-              <a href="#" class="social-link">
-                <i class="fab fa-facebook-f"></i>
-              </a>
-              <a href="#" class="social-link">
-                <i class="fab fa-twitter"></i>
-              </a>
-              <a href="#" class="social-link">
-                <i class="fab fa-linkedin-in"></i>
-              </a>
-              <a href="#" class="social-link">
-                <i class="fab fa-instagram"></i>
-              </a>
-            </div>
           </div>
           
           <div class="footer-column">
@@ -1377,33 +1356,18 @@
           </div>
           
           <div class="footer-column">
-            <h3>Resources</h3>
+            <h3>Learn More</h3>
             <ul class="footer-links">
-              <li><a href="#"><i class="fas fa-globe"></i> WHO Guidelines</a></li>
-              <li><a href="#"><i class="fas fa-book-medical"></i> Research Papers</a></li>
-              <li><a href="#"><i class="fas fa-chart-line"></i> Statistics</a></li>
-              <li><a href="#"><i class="fas fa-download"></i> Mobile App</a></li>
-            </ul>
-          </div>
-          
-          <div class="footer-column">
-            <h3>Support</h3>
-            <ul class="footer-links">
-              <li><a href="#"><i class="fas fa-question-circle"></i> Help Center</a></li>
-              <li><a href="#"><i class="fas fa-phone-alt"></i> Contact Us</a></li>
-              <li><a href="#"><i class="fas fa-bug"></i> Report Issue</a></li>
-              <li><a href="#"><i class="fas fa-comments"></i> Feedback</a></li>
+              <li><a href="https://www.who.int/health-topics/tuberculosis" target="_blank" rel="noopener"><i class="fas fa-globe"></i> WHO - Tuberculosis</a></li>
+              <li><a href="https://www.cdc.gov/tb/" target="_blank" rel="noopener"><i class="fas fa-book-medical"></i> CDC - TB Info</a></li>
+              <li><a href="https://www.who.int/teams/global-tuberculosis-programme" target="_blank" rel="noopener"><i class="fas fa-chart-line"></i> Global TB Programme</a></li>
             </ul>
           </div>
         </div>
         
         <div class="footer-bottom">
-          <div class="copyright">© 2024 TB Detect. All rights reserved. Fighting TB with innovation and compassion.</div>
-          <div class="footer-bottom-links">
-            <a href="#">Privacy Policy</a>
-            <a href="#">Terms of Service</a>
-            <a href="#">Cookie Policy</a>
-          </div>
+          <div class="copyright">© 2025 TB Detect. All rights reserved.</div>
+          <div class="footer-bottom-links"></div>
         </div>
       </div>
     </footer>

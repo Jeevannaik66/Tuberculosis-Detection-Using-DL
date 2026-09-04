@@ -34,19 +34,26 @@ IMG_SIZE = (224, 224)
 def load_precheck_model():
     global precheck_model
     if precheck_model is None:
-        precheck_model = tf.keras.models.load_model(os.path.join(MODEL_DIR, 'precheck_model.h5'))
+        model_path = os.path.join(MODEL_DIR, 'precheck_model.h5')
+        if not os.path.exists(model_path):
+            raise FileNotFoundError("Pre-check model is not available. Please contact the administrator.")
+        precheck_model = tf.keras.models.load_model(model_path)
 
-# Function to load classification model only when needed
 def load_classification_model():
     global tb_classification_model
     if tb_classification_model is None:
-        tb_classification_model = tf.keras.models.load_model(os.path.join(MODEL_DIR, 'tb_classification_model.h5'))
+        model_path = os.path.join(MODEL_DIR, 'tb_classification_model.h5')
+        if not os.path.exists(model_path):
+            raise FileNotFoundError("Classification model is not available. Please contact the administrator.")
+        tb_classification_model = tf.keras.models.load_model(model_path)
 
-# Function to load densenet model only when needed
 def load_densenet_model():
     global tb_densenet_model
     if tb_densenet_model is None:
-        tb_densenet_model = tf.keras.models.load_model(os.path.join(MODEL_DIR, 'tb_densenet_model.keras'))
+        model_path = os.path.join(MODEL_DIR, 'tb_densenet_model.keras')
+        if not os.path.exists(model_path):
+            raise FileNotFoundError("Heatmap model is not available. Please contact the administrator.")
+        tb_densenet_model = tf.keras.models.load_model(model_path)
 
 # Function to check if image is a valid chest X-ray
 def is_chest_xray(image_path):
@@ -71,15 +78,22 @@ def home():
 # Upload route
 @app.route('/upload', methods=['GET', 'POST'])
 def upload():
+    is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
     if request.method == 'POST':
         if 'file' not in request.files:
+            if is_ajax:
+                return jsonify(error='No file part'), 400
             flash('No file part')
             return redirect(request.url)
         file = request.files['file']
         if file.filename == '':
+            if is_ajax:
+                return jsonify(error='No selected file'), 400
             flash('No selected file')
             return redirect(request.url)
         if not file.filename.lower().endswith(('.png', '.jpg', '.jpeg')):
+            if is_ajax:
+                return jsonify(error='File type not supported. Use JPG, JPEG, or PNG.'), 400
             flash('File type not supported')
             return redirect(request.url)
         try:
@@ -87,11 +101,23 @@ def upload():
             image_path = os.path.join(UPLOAD_FOLDER, safe_name)
             file.save(image_path)
             if not is_chest_xray(image_path):
+                if is_ajax:
+                    return jsonify(error='Uploaded image is not a valid chest X-ray.'), 400
                 flash('Uploaded image is not a valid chest X-ray.')
                 return redirect(request.url)
+            if is_ajax:
+                image_url = url_for('static', filename=f'uploads/{safe_name}')
+                return jsonify(image_file=safe_name, image_url=image_url)
             return render_template('upload.html', image_file=safe_name, show_predict_button=True)
-        except Exception as e:
-            flash(f'Error saving file: {str(e)}')
+        except FileNotFoundError as e:
+            if is_ajax:
+                return jsonify(error=str(e)), 503
+            flash(str(e))
+            return redirect(request.url)
+        except Exception:
+            if is_ajax:
+                return jsonify(error='Something went wrong while uploading. Please try again.'), 500
+            flash('Something went wrong while uploading. Please try again.')
             return redirect(request.url)
     return render_template('upload.html')
 
@@ -105,11 +131,20 @@ def predict():
         _, img_array = load_and_preprocess_image(image_path, target_size=IMG_SIZE)
         tb_classification_prediction = tb_classification_model.predict(img_array)
         tb_predicted_class = np.argmax(tb_classification_prediction, axis=1)[0]
-        tb_accuracy = np.max(tb_classification_prediction) * 100
+        tb_accuracy = round(float(np.max(tb_classification_prediction) * 100), 2)
         result = "NO" if tb_predicted_class == 0 else "YES"
+        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            return jsonify(result=result, accuracy=tb_accuracy, image_file=image_file)
         return render_template('upload.html', result=result, accuracy=tb_accuracy, image_file=image_file)
-    except Exception as e:
-        flash(f'Error during prediction: {str(e)}')
+    except FileNotFoundError as e:
+        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            return jsonify(error=str(e)), 503
+        flash(str(e))
+        return redirect(url_for('upload'))
+    except Exception:
+        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            return jsonify(error='Something went wrong during prediction. Please try again.'), 500
+        flash('Something went wrong during prediction. Please try again.')
         return redirect(url_for('upload'))
 
 # Generate heatmap route - Load densenet model only when generating heatmap
@@ -127,9 +162,18 @@ def generate_heatmap():
         heatmap_path = os.path.join(UPLOAD_FOLDER, f'heatmap_{image_file}')
         cv2.imwrite(heatmap_path, overlayed_img)
         heatmap_url = url_for('static', filename=f'uploads/heatmap_{image_file}')
+        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            return jsonify(heatmap_url=heatmap_url, image_file=image_file)
         return render_template('upload.html', heatmap_url=heatmap_url, image_file=image_file, result="YES")
-    except Exception as e:
-        flash(f'Error generating heatmap: {str(e)}')
+    except FileNotFoundError as e:
+        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            return jsonify(error=str(e)), 503
+        flash(str(e))
+        return redirect(url_for('upload'))
+    except Exception:
+        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            return jsonify(error='Something went wrong while generating heatmap. Please try again.'), 500
+        flash('Something went wrong while generating heatmap. Please try again.')
         return redirect(url_for('upload'))
 
 # Image preprocessing

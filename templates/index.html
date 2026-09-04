@@ -1299,6 +1299,10 @@
           padding: 1rem;
           border-radius: 10px;
           box-shadow: var(--shadow);
+          position: absolute;
+          top: 70px;
+          left: 0;
+          z-index: 999;
         }
 
         .nav-links.active {
@@ -1685,7 +1689,7 @@
               <i class="fas fa-chevron-down"></i>
             </div>
             <div class="faq-answer">
-              Our deep learning model achieves over 95% accuracy in detecting tuberculosis patterns from chest X-rays. It's trained on thousands of validated medical images and continuously improves through machine learning.
+              Our system uses a DenseNet121 model trained on labeled chest X-ray datasets. It provides a confidence score along with Grad-CAM heatmaps so you can see what the model detected. Results should always be verified by a medical professional.
             </div>
           </div>
           
@@ -1783,52 +1787,52 @@
       </div>
     </section>
 
-    <!-- News Section -->
+    <!-- Did You Know Section -->
     <section class="news-section">
-      <h2 class="section-title">Latest TB Updates</h2>
+      <h2 class="section-title">Did You Know?</h2>
       <p class="section-subtitle">
-        Stay informed about the latest developments in tuberculosis research and global health initiatives
+        Important facts about tuberculosis and the role of AI in healthcare
       </p>
-      
+
       <div class="news-grid">
         <div class="news-card" data-aos="fade-up" data-aos-delay="100">
           <div class="news-image news-img-1">
-            <div class="news-date">Apr 14, 2024</div>
+            <div class="news-date">WHO Fact</div>
             <div class="news-gradient"></div>
           </div>
           <div class="news-content">
-            <h3 class="news-headline">Breakthrough in AI Diagnostics Shows 98% Accuracy in Early TB Detection</h3>
+            <h3 class="news-headline">TB is curable and preventable, yet it remains one of the top infectious disease killers worldwide</h3>
             <div class="news-location">
               <i class="fas fa-map-marker-alt"></i>
-              <span class="news-location-text">Global Research</span>
+              <span class="news-location-text">World Health Organization</span>
             </div>
           </div>
         </div>
-        
+
         <div class="news-card" data-aos="fade-up" data-aos-delay="200">
           <div class="news-image news-img-2">
-            <div class="news-date">Mar 27, 2024</div>
+            <div class="news-date">AI in Healthcare</div>
             <div class="news-gradient"></div>
           </div>
           <div class="news-content">
-            <h3 class="news-headline">WHO Reports Significant Progress in Global TB Elimination Efforts</h3>
+            <h3 class="news-headline">Deep learning models can analyze chest X-rays in seconds, assisting radiologists in early screening</h3>
             <div class="news-location">
               <i class="fas fa-map-marker-alt"></i>
-              <span class="news-location-text">Geneva, Switzerland</span>
+              <span class="news-location-text">Medical AI Research</span>
             </div>
           </div>
         </div>
-        
+
         <div class="news-card" data-aos="fade-up" data-aos-delay="300">
           <div class="news-image news-img-3">
-            <div class="news-date">Feb 15, 2024</div>
+            <div class="news-date">Early Detection</div>
             <div class="news-gradient"></div>
           </div>
           <div class="news-content">
-            <h3 class="news-headline">New Rapid Testing Technology Reduces Diagnosis Time from Weeks to Hours</h3>
+            <h3 class="news-headline">Early detection and treatment can cure over 85% of TB cases, making screening tools essential</h3>
             <div class="news-location">
               <i class="fas fa-map-marker-alt"></i>
-              <span class="news-location-text">Boston, USA</span>
+              <span class="news-location-text">Global Health Data</span>
             </div>
           </div>
         </div>
@@ -1845,22 +1849,8 @@
               <span>TB Detect</span>
             </div>
             <p class="footer-description">
-              Pioneering AI-powered tuberculosis detection to create a world free from TB. Advanced technology, compassionate care, global impact.
+              A deep learning project for automated tuberculosis screening from chest X-rays. Built with DenseNet121 and Grad-CAM.
             </p>
-            <div class="social-links">
-              <a href="#" class="social-link">
-                <i class="fab fa-facebook-f"></i>
-              </a>
-              <a href="#" class="social-link">
-                <i class="fab fa-twitter"></i>
-              </a>
-              <a href="#" class="social-link">
-                <i class="fab fa-linkedin-in"></i>
-              </a>
-              <a href="#" class="social-link">
-                <i class="fab fa-instagram"></i>
-              </a>
-            </div>
           </div>
           
           <div class="footer-column">
@@ -1874,33 +1864,18 @@
           </div>
           
           <div class="footer-column">
-            <h3>Resources</h3>
+            <h3>Learn More</h3>
             <ul class="footer-links">
-              <li><a href="#"><i class="fas fa-globe"></i> WHO Guidelines</a></li>
-              <li><a href="#"><i class="fas fa-book-medical"></i> Research Papers</a></li>
-              <li><a href="#"><i class="fas fa-chart-line"></i> Statistics</a></li>
-              <li><a href="#"><i class="fas fa-download"></i> Mobile App</a></li>
-            </ul>
-          </div>
-          
-          <div class="footer-column">
-            <h3>Support</h3>
-            <ul class="footer-links">
-              <li><a href="#"><i class="fas fa-question-circle"></i> Help Center</a></li>
-              <li><a href="#"><i class="fas fa-phone-alt"></i> Contact Us</a></li>
-              <li><a href="#"><i class="fas fa-bug"></i> Report Issue</a></li>
-              <li><a href="#"><i class="fas fa-comments"></i> Feedback</a></li>
+              <li><a href="https://www.who.int/health-topics/tuberculosis" target="_blank" rel="noopener"><i class="fas fa-globe"></i> WHO - Tuberculosis</a></li>
+              <li><a href="https://www.cdc.gov/tb/" target="_blank" rel="noopener"><i class="fas fa-book-medical"></i> CDC - TB Info</a></li>
+              <li><a href="https://www.who.int/teams/global-tuberculosis-programme" target="_blank" rel="noopener"><i class="fas fa-chart-line"></i> Global TB Programme</a></li>
             </ul>
           </div>
         </div>
         
         <div class="footer-bottom">
-          <div class="copyright">© 2024 TB Detect. All rights reserved. Fighting TB with AI innovation.</div>
-          <div class="footer-bottom-links">
-            <a href="#">Privacy Policy</a>
-            <a href="#">Terms of Service</a>
-            <a href="#">Cookie Policy</a>
-          </div>
+          <div class="copyright">© 2025 TB Detect. All rights reserved.</div>
+          <div class="footer-bottom-links"></div>
         </div>
       </div>
     </footer>
